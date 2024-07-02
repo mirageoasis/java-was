@@ -1,6 +1,7 @@
 package codesquad;
 
 import http.Http;
+import http.startline.RequestLine;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,12 +13,15 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.file.Files;
 import org.slf4j.Logger;
+import util.FilePath;
 import util.LoggerUtil;
 
 public class ClientHandler implements Runnable {
 
     private final Socket clientSocket;
     private final Logger logger = LoggerUtil.getLogger();
+    private final String rootPath = System.getProperty("user.dir");
+    private final String staticPath = rootPath + "/src/main/resources/static";
 
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -32,13 +36,12 @@ public class ClientHandler implements Runnable {
             // HTTP 응답을 생성합니다.
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             Http http = Http.generate(bufferedReader);
+            RequestLine requestLine = (RequestLine) http.getStartLine();
             // .xx 이 있으면 static 파일로 처리, 없으면 controller로 처리
             logger.info("Request: {}", http);
-            String rootPath = System.getProperty("user.dir");
-            logger.info(rootPath);
             // resource/static/index.html 파일을 읽어서 보내기
-            String pathName = "src/main/resources/static/index.html";
-            File file = new File(pathName);
+            FilePath filePath = new FilePath(staticPath);
+            File file = new File(filePath.join(requestLine.getPath().getPath()).getPath());
 
             if (file.exists()) {
                 logger.info("file exists");
