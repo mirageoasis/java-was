@@ -1,17 +1,18 @@
-package http;
+package http.startline;
 
-public class RequestLine {
+import http.HttpMethod;
+
+public class RequestLine extends StartLine {
     private final HttpMethod method;
     private final String path;
-    private final String version;
 
-    public RequestLine(HttpMethod method, String path, String version) {
+    private RequestLine(HttpMethod method, String path, String version) {
+        super(version);
         this.method = method;
         this.path = path;
-        this.version = version;
     }
 
-    public static RequestLine fromRequest(String requestLine) {
+    public static RequestLine fromString(String requestLine) {
         String[] split = requestLine.split(" ");
         if(split.length != 3) {
             throw new IllegalArgumentException("Request Line 형식이 잘못되었습니다.");
@@ -31,8 +32,9 @@ public class RequestLine {
         return path;
     }
 
-    public String getVersion() {
-        return version;
+    @Override
+    public String toString() {
+        return method + " " + path + " " + getVersion();
     }
 
 }
