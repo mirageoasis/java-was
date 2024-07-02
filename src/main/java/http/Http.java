@@ -88,4 +88,13 @@ public class Http {
     public String getBody() {
         return body;
     }
+
+    @Override
+    public String toString() {
+        return "Http{" +
+            "startLine=" + startLine +
+            ", header=" + header +
+            ", body='" + body + '\'' + '\n' +
+            '}';
+    }
 }

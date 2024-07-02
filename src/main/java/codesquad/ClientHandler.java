@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import util.LoggerUtil;
 
 public class ClientHandler implements Runnable {
+
     private final Socket clientSocket;
     private final Logger logger = LoggerUtil.getLogger();
 
@@ -20,7 +21,8 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        try (OutputStream clientOutput = clientSocket.getOutputStream();
+        try (
+            OutputStream clientOutput = clientSocket.getOutputStream();
             InputStream inputStream = clientSocket.getInputStream()
         ) {
             // HTTP 응답을 생성합니다.
