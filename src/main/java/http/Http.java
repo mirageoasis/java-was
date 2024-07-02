@@ -2,6 +2,8 @@ package http;
 
 import http.startline.RequestLine;
 import http.startline.StartLine;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class Http {
@@ -16,12 +18,15 @@ public class Http {
         this.body = body;
     }
 
-    public static Http stringToRequest(String httpRequest) {
-        String[] splitString = splitString(httpRequest);
+    public static Http generate(BufferedReader bufferedReader) throws IOException {
+        final String firstLine = bufferedReader.readLine();
+        if (firstLine == null) {
+            throw new IllegalArgumentException("HTTP 메시지가 비어 있습니다.");
+        }
 
-        StartLine startLine = RequestLine.fromString(splitString[0]);
-        Header header = Header.fromString(splitString[1]);
-        String body = splitString[2];
+        StartLine startLine = RequestLine.fromString(firstLine);
+        Header header = Header.from(bufferedReader);
+        String body = "";
         return new Http(startLine, header, body);
     }
 

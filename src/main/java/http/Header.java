@@ -1,5 +1,7 @@
 package http;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +13,17 @@ public class Header {
         this.header = headerMapper(headerString);
     }
 
-    public static Header fromString(String headerString) {
-        return new Header(headerString);
+    public static Header from(BufferedReader bufferedReader) throws IOException {
+        StringBuilder headerString = new StringBuilder();
+        do {
+            String line = bufferedReader.readLine();
+            if (line == null || line.isEmpty()) {
+                break;
+            }
+            headerString.append(line).append("\r\n");
+        } while (true);
+
+        return new Header(headerString.toString());
     }
 
     private Map<String, String> headerMapper(String headerString) {
@@ -69,5 +80,14 @@ public class Header {
 
     public String getHeader(String key) {
         return header.getOrDefault(key, "");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> entry : header.entrySet()) {
+            sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\r\n");
+        }
+        return sb.toString();
     }
 }
