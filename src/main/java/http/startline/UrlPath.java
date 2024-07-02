@@ -3,28 +3,28 @@ package http.startline;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Path {
+public class UrlPath {
 
-    public static Path of(String fullPath) {
-        return new Path(fullPath);
+    public static UrlPath of(String fullPath) {
+        return new UrlPath(fullPath);
     }
 
     private final String fullPath;
     private final String path;
     private final Map<String, String> queryParameters;
 
-    public Path(String fullPath) {
+    public UrlPath(String fullPath) {
         this.fullPath = fullPath;
-        this.queryParameters = new HashMap<>();
-        this.path = parsePath();
+        this.queryParameters = parseQuery(fullPath);
+        this.path = parsePath(fullPath);
     }
 
-    private String parsePath() {
+    private String parsePath(String fullPath) {
         String[] parts = fullPath.split("\\?", 2);
         return parts[0];
     }
 
-    private HashMap<String, String> parseQuery() {
+    private HashMap<String, String> parseQuery(String fullPath) {
         String[] parts = fullPath.split("\\?", 2);
         if (parts.length == 2) {
             return parseQueryParameters(parts[1]);
