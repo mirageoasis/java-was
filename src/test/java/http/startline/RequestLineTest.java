@@ -17,7 +17,7 @@ class RequestLineTest {
         RequestLine startLine = RequestLine.fromString(requestLine);
 
         Assertions.assertEquals(HttpMethod.GET, startLine.getMethod());
-        assertEquals("/index.html", startLine.getPath());
+        assertEquals("/index.html", startLine.getPath().getPath());
         assertEquals("HTTP/1.1", startLine.getVersion());
     }
 
@@ -44,7 +44,7 @@ class RequestLineTest {
     @DisplayName("RequestLine 객체 생성 테스트 - 경로")
     public void testGetPath() {
         RequestLine requestLine = RequestLine.fromString("GET /index.html HTTP/1.1");
-        assertEquals("/index.html", requestLine.getPath());
+        assertEquals("/index.html", requestLine.getPath().getPath());
     }
 
     @Test

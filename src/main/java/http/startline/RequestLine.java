@@ -4,9 +4,9 @@ import http.HttpMethod;
 
 public class RequestLine extends StartLine {
     private final HttpMethod method;
-    private final String path;
+    private final Path path;
 
-    private RequestLine(HttpMethod method, String path, String version) {
+    private RequestLine(HttpMethod method, Path path, String version) {
         super(version);
         this.method = method;
         this.path = path;
@@ -21,14 +21,14 @@ public class RequestLine extends StartLine {
         HttpMethod method = HttpMethod.of(split[0]);
         String path = split[1];
         String version = split[2];
-        return new RequestLine(method, path, version);
+        return new RequestLine(method, Path.of(path), version);
     }
 
     public HttpMethod getMethod() {
         return method;
     }
 
-    public String getPath() {
+    public Path getPath() {
         return path;
     }
 
