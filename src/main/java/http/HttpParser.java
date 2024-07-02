@@ -1,2 +1,6 @@
-package http;public class HttpParser {
+package http;
+
+public class HttpParser {
+    public HttpParser() {
+    }
 }

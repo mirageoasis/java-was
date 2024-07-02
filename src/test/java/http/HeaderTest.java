@@ -15,10 +15,10 @@ class HeaderTest {
     @MethodSource("normalHeader")
     void 정상적인_헤더_생성(String normalHeaderString, String key, String value) {
         // given
-        Header header1 = new Header(normalHeaderString);
+        Header header = Header.fromString(normalHeaderString);
 
         // when
-        String result = header1.getHeader(key);
+        String result = header.getHeader(key);
 
         // then
         assertEquals(value, result);
@@ -28,7 +28,7 @@ class HeaderTest {
     @DisplayName("헤더 키가 없는 경우 빈 문자열을 반환한다.")
     void 헤더_키가_없는_경우() {
         // given
-        Header header = new Header("Host: localhost:8080");
+        Header header = Header.fromString("Host: localhost:8080");
 
         // when
         String result = header.getHeader("No-Exist");
@@ -45,7 +45,7 @@ class HeaderTest {
         // then
         assertThrows(IllegalArgumentException.class, () -> {
             // when
-            new Header(invalidHeaderString);
+            Header.fromString(invalidHeaderString);
         });
     }
 
