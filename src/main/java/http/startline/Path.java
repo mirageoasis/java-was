@@ -9,36 +9,41 @@ public class Path {
         return new Path(fullPath);
     }
 
-    private String fullPath;
-    private String path;
-    private Map<String, String> queryParameters;
+    private final String fullPath;
+    private final String path;
+    private final Map<String, String> queryParameters;
 
     public Path(String fullPath) {
         this.fullPath = fullPath;
         this.queryParameters = new HashMap<>();
-        parsePath();
+        this.path = parsePath();
     }
 
-    private void parsePath() {
+    private String parsePath() {
         String[] parts = fullPath.split("\\?", 2);
-        this.path = parts[0];
-
-        if (parts.length > 1) {
-            String queryString = parts[1];
-            parseQueryParameters(queryString);
-        }
+        return parts[0];
     }
 
-    private void parseQueryParameters(String queryString) {
+    private HashMap<String, String> parseQuery() {
+        String[] parts = fullPath.split("\\?", 2);
+        if (parts.length == 2) {
+            return parseQueryParameters(parts[1]);
+        }
+        return new HashMap<>();
+    }
+
+    private HashMap<String, String> parseQueryParameters(String queryString) {
         String[] params = queryString.split("&");
+        HashMap<String, String> ret = new HashMap<>();
         for (String param : params) {
             String[] keyValue = param.split("=", 2);
             if (keyValue.length == 2) {
-                queryParameters.put(keyValue[0], keyValue[1]);
+                ret.put(keyValue[0], keyValue[1]);
             } else {
-                queryParameters.put(keyValue[0], "");
+                ret.put(keyValue[0], "");
             }
         }
+        return ret;
     }
 
     public String getPath() {
