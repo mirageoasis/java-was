@@ -26,8 +26,20 @@ public class Http {
 
         StartLine startLine = RequestLine.fromString(firstLine);
         Header header = Header.from(bufferedReader);
-        String body = "";
+        String body = generateBody(bufferedReader, header);
         return new Http(startLine, header, body);
+    }
+
+    private static String generateBody(BufferedReader bufferedReader, Header header) throws IOException {
+        if (header.getHeader("Content-Length").isEmpty()) {
+            return "";
+        }
+
+        int contentLength = Integer.parseInt(header.getHeader("Content-Length"));
+        char[] body = new char[contentLength];
+        bufferedReader.read(body, 0, contentLength);
+
+        return new String(body);
     }
 
     private static String[] splitString(String httpString) {

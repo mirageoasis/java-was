@@ -21,16 +21,19 @@ public class HttpTest {
     private static Stream<Arguments> provideValidHttpRequests() {
         return Stream.of(
             Arguments.of(
-                "GET /index.html HTTP/1.1\r\nHost: www.example.com\r\nConnection: keep-alive\r\n\r\nbody content",
-                "GET", "/index.html", "HTTP/1.1", "Host: www.example.com\r\nConnection: keep-alive", "body content"
+                "GET /index.html HTTP/1.1\r\nHost: www.example.com\r\nConnection: keep-alive\r\nContent-Length: 12\r\n\r\nbody content",
+                "GET", "/index.html", "HTTP/1.1",
+                "Host: www.example.com\r\nConnection: keep-alive\r\nContent-Length: 12",
+                "body content"
             ),
             Arguments.of(
-                "GET /index.html HTTP/1.1\r\nHost: www.example.com\r\nConnection: keep-alive\r\n\r\n",
-                "GET", "/index.html", "HTTP/1.1", "Host: www.example.com\r\nConnection: keep-alive", ""
+                "GET /index.html HTTP/1.1\r\nHost: www.example.com\r\nConnection: keep-alive\r\nContent-Length: 0\r\n\r\n",
+                "GET", "/index.html", "HTTP/1.1",
+                "Host: www.example.com\r\nConnection: keep-alive\r\nContent-Length: 0", ""
             ),
             Arguments.of(
-                "GET /index.html HTTP/1.1\r\n\r\nbody content",
-                "GET", "/index.html", "HTTP/1.1", "", "body content"
+                "GET /index.html HTTP/1.1\r\nContent-Length: 12\r\n\r\nbody content",
+                "GET", "/index.html", "HTTP/1.1", "Content-Length: 12", "body content"
             )
         );
     }
@@ -39,14 +42,16 @@ public class HttpTest {
         return Stream.of(
             Arguments.of(" ", "Request Line 형식이 잘못되었습니다."),
             Arguments.of("", "HTTP 메시지가 비어 있습니다."),
-            Arguments.of("\r\nHost: www.example.com\r\nConnection: keep-alive\r\n\r\nbody content", "Request Line 형식이 잘못되었습니다.")
+            Arguments.of("\r\nHost: www.example.com\r\nConnection: keep-alive\r\n\r\nbody content",
+                "Request Line 형식이 잘못되었습니다.")
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideValidHttpRequests")
     @DisplayName("유효한 HTTP 요청 테스트")
-    public void testGenerate(String httpRequest, String expectedMethod, String expectedPath, String expectedVersion, String expectedHeaders, String expectedBody) throws IOException {
+    public void testGenerate(String httpRequest, String expectedMethod, String expectedPath,
+        String expectedVersion, String expectedHeaders, String expectedBody) throws IOException {
         Http http = Http.generate(new BufferedReader(new StringReader(httpRequest)));
         StartLine startLine = http.getStartLine();
         Header header = http.getHeader();
