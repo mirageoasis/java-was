@@ -13,6 +13,10 @@ public class Header {
         this.header = headerMapper(headerString);
     }
 
+    public static Header of() {
+        return new Header("");
+    }
+
     public static Header from(BufferedReader bufferedReader) throws IOException {
         StringBuilder headerString = new StringBuilder();
         do {
@@ -80,6 +84,10 @@ public class Header {
 
     public String getHeader(String key) {
         return header.getOrDefault(key, "");
+    }
+
+    public void addHeader(String key, String value) {
+        header.put(key, value);
     }
 
     @Override
