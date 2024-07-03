@@ -93,6 +93,7 @@ public class ClientHandler implements Runnable {
             case "js" -> "application/javascript";
             case "json" -> "application/json";
             case "svg" -> "image/svg+xml";
+            case "ico" -> "image/x-icon";
             default -> "application/octet-stream"; // 기타 파일 형식에 대한 기본 MIME 타입
         };
     }
