@@ -49,14 +49,7 @@ public class ClientHandler implements Runnable {
 
             temp.handle(httpRequest, httpResponse);
 
-            // response 기준으로 다시 쓴다.
-            // HTTP 응답 헤더 생성
-            /*
-            String httpResponseHeader = "HTTP/1.1 200 OK\r\n" +
-            "Content-Type: " + contentType + "\r\n" +
-            "Content-Length: " + fileContent.length + "\r\n" +
-            "\r\n";
-            * */
+            // TODO: 함수로 변경
             String responseLine = ((ResponseLine) httpResponse.getStartLine()).toString();
             String responseHeaderLine = httpResponse.getHeader().toString();
 
