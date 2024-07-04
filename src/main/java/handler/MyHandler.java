@@ -1,16 +1,17 @@
 package handler;
 
-import http.Http;
 import http.HttpMethod;
+import http.HttpRequest;
+import http.HttpResponse;
 import http.startline.RequestLine;
 import java.io.IOException;
-import util.LoggerUtil;
 import org.slf4j.Logger;
+import util.LoggerUtil;
 
 abstract public class MyHandler {
     private static final Logger logger = LoggerUtil.getLogger();
 
-    public void handle(Http httpRequest, Http httpResponse) throws IOException {
+    public void handle(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
         RequestLine requestLine = (RequestLine) httpRequest.getStartLine();
         HttpMethod httpMethod = requestLine.getMethod();
         logger.info("Request: {}", httpRequest);
@@ -23,6 +24,6 @@ abstract public class MyHandler {
         }
     }
 
-    abstract void doGet(Http httpRequest, Http httpResponse) throws IOException;
-    abstract void doPost(Http httpRequest, Http httpResponse);
+    abstract void doGet(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException;
+    abstract void doPost(HttpRequest httpRequest, HttpResponse httpResponse);
 }

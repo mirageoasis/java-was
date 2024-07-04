@@ -1,16 +1,16 @@
 package handler;
 
 import dto.UserDto;
-import http.Http;
+import http.HttpRequest;
 import http.HttpResponse;
 import http.ResponseWriter;
 import http.startline.RequestLine;
-import http.startline.ResponseLine;
 import java.util.Map;
 import service.UserService;
 
 public class UserCreateHandler extends MyHandler {
-
+    // TODO: 이런식으로 json 형태로 요청이나 응답을 보내는 경우
+    // TODO: Content-Type을 application/json으로 설정하는 클래스를 하나 더 만들 계획
     private final UserService userService;
 
     public UserCreateHandler(UserService userService) {
@@ -18,7 +18,7 @@ public class UserCreateHandler extends MyHandler {
     }
 
     @Override
-    void doGet(Http httpRequest, Http httpResponse) {
+    void doGet(HttpRequest httpRequest, HttpResponse httpResponse) {
         RequestLine startLine = (RequestLine) httpRequest.getStartLine();
 
         Map<String, String> queryParams = startLine.getUrlPath().getQueryParameters();
@@ -29,18 +29,13 @@ public class UserCreateHandler extends MyHandler {
             queryParams.get("email")
         );
         userService.createUser(userDto);
-
-        ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
-
-        //responseLine.success();
-        ResponseWriter.success();
-
         httpResponse.getHeader().addHeader("Content-Type", "text/html");
-        httpResponse.getHeader().addHeader("Content-Length", String.valueOf(httpResponse.getBody().length));
+
+        ResponseWriter.redirect(httpRequest, httpResponse, "/index.html");
     }
 
     @Override
-    void doPost(Http httpRequest, Http httpResponse) {
+    void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
 
     }
 }
