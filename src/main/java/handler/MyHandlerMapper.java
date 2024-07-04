@@ -3,6 +3,8 @@ package handler;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
+import repository.UserRepository;
+import service.UserService;
 import util.LoggerUtil;
 
 public class MyHandlerMapper {
@@ -11,7 +13,7 @@ public class MyHandlerMapper {
     private final Map<String, MyHandler> handlerMap = new HashMap<>();
 
     private MyHandlerMapper() {
-        addHandler("/create", new UserCreateHandler());
+        addHandler("/create", new UserCreateHandler(new UserService(new UserRepository())));
     }
 
     public static MyHandlerMapper getInstance() {
