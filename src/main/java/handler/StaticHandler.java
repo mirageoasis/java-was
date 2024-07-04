@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import util.FileReader;
 
-public class StaticHandler extends MyHandler{
+public class StaticHandler extends MyHandler {
+
     private final Logger logger = Logger.getLogger(StaticHandler.class.getName());
 
 
@@ -24,10 +25,7 @@ public class StaticHandler extends MyHandler{
         ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
         Header responseHeader = httpResponse.getHeader();
 
-        responseLine.setVersion("HTTP/1.1");
-        responseLine.setStatusMessage("OK");
-        responseLine.setStatusCode(200);
-
+        responseLine.success();
 
         //Header
         responseHeader.addHeader("Content-Type", contentType);

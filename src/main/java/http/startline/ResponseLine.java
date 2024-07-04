@@ -30,6 +30,12 @@ public class ResponseLine extends StartLine{
         this.statusMessage = statusMessage;
     }
 
+    public void success() {
+        setStatusCode(200);
+        setStatusMessage("OK");
+        setVersion("HTTP/1.1");
+    }
+
     @Override
     public String toString() {
         return getVersion() + " " + statusCode + " " + statusMessage + "\r\n";

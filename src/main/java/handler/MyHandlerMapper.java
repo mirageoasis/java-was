@@ -11,7 +11,6 @@ public class MyHandlerMapper {
     private final Map<String, MyHandler> handlerMap = new HashMap<>();
 
     private MyHandlerMapper() {
-        addHandler("/index.html", new StaticHandler());
         addHandler("/create", new UserCreateHandler());
     }
 
@@ -27,20 +26,26 @@ public class MyHandlerMapper {
     }
 
     public MyHandler findHandler(String urlPath) {
-        // TODO: 여기에 함수 하나 더 둬서 urlPath를 받아서 처리하도록 하자.
-
         if (urlPath == null) {
-            logger.info("urlPath is null");
+            logger.error("urlPath is null");
+            return null;
+        }
+        if (isStaticHandler(urlPath)){
+            logger.info("StaticHandler");
             return new StaticHandler();
         }
-
-        if (handlerMap.getOrDefault(urlPath, null) == null) {
-            logger.info("handler not found");
-            return new StaticHandler();
-        }
-
-        logger.info("urlPath: " + urlPath);
 
         return handlerMap.get(urlPath);
     }
+
+    private boolean isStaticHandler(String urlPath) {
+        // '/' 이후에 '.'이 있으면 staticHandler로 간주
+        int slashIndex = urlPath.lastIndexOf('/');
+        if (slashIndex != -1) {
+            String pathAfterSlash = urlPath.substring(slashIndex + 1);
+            return pathAfterSlash.contains(".");
+        }
+        return false;
+    }
+
 }

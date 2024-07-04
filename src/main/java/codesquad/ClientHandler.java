@@ -5,6 +5,7 @@ import handler.MyHandlerMapper;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.startline.RequestLine;
+import http.startline.ResponseLine;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -63,7 +64,7 @@ public class ClientHandler implements Runnable {
     }
 
     private void writeResponse(OutputStream clientOutput, HttpResponse httpResponse) throws IOException {
-        String responseLine = httpResponse.getStartLine().toString();
+        ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
         String responseHeaderLine = httpResponse.getHeader().toString();
         String body = new String(httpResponse.getBody());
 
@@ -71,7 +72,7 @@ public class ClientHandler implements Runnable {
         // logger.info("Response Header\n{}", responseHeaderLine);
         // logger.info("Response Body\n{}", body);
 
-        clientOutput.write(responseLine.getBytes());
+        clientOutput.write(responseLine.toString().getBytes());
         clientOutput.write(responseHeaderLine.getBytes());
         clientOutput.write("\r\n".getBytes());
         clientOutput.write(httpResponse.getBody());
