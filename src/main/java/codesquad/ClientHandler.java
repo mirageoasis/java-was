@@ -37,14 +37,11 @@ public class ClientHandler implements Runnable {
             HttpResponse httpResponse = HttpResponse.generateHttpResponse();
 
             RequestLine requestLine = (RequestLine) httpRequest.getStartLine();
-            // resource/static/index.html 파일을 읽어서 보내기
-            // 핸들러는 매칭되는 것만 찾고 파일은 핸들러와 무관하다. 일단은 핸들러가 작동하지 않는다고 가정하고 코드를 짠다.
 
             MyHandlerMapper handlerMapper = MyHandlerMapper.getInstance();
-            MyHandler temp = handlerMapper.findHandler(requestLine.getUrlPath().getPath());
+            MyHandler chosenHandler = handlerMapper.findHandler(requestLine.getUrlPath().getPath());
 
-            temp.handle(httpRequest, httpResponse);
-
+            chosenHandler.handle(httpRequest, httpResponse);
             writeResponse(clientOutput, httpResponse);
 
         } catch (FileNotFoundException e) {
