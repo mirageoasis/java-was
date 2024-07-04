@@ -1,5 +1,8 @@
 package http.startline;
 
+import http.Header;
+import http.Http;
+
 public class ResponseLine extends StartLine{
 
     // http 응답 구현에 따라서 상태 코드와 상태 메시지를 저장하는 클래스
@@ -41,4 +44,15 @@ public class ResponseLine extends StartLine{
         return getVersion() + " " + statusCode + " " + statusMessage + "\r\n";
     }
 
+    public void redirect(Http httpRequest, Http httpResponse, String urlPath) {
+        ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
+        responseLine.setStatusCode(302);
+        responseLine.setStatusMessage("Found");
+        responseLine.setVersion("HTTP/1.1");
+
+        Header responseHeader = httpResponse.getHeader();
+        responseHeader.addHeader("Location", urlPath);
+
+        httpResponse.setStartLine(responseLine);
+    }
 }

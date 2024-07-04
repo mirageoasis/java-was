@@ -6,23 +6,30 @@ import http.startline.RequestLine;
 import http.startline.ResponseLine;
 import java.io.IOException;
 import java.util.logging.Logger;
+import org.slf4j.LoggerFactory;
 import util.FileReader;
 
 public class StaticHandler extends MyHandler {
 
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(StaticHandler.class);
     private final Logger logger = Logger.getLogger(StaticHandler.class.getName());
 
 
     @Override
     void doGet(Http httpRequest, Http httpResponse) throws IOException {
-        logger.info("StaticHandler doGet");
         RequestLine requestLine = (RequestLine) httpRequest.getStartLine();
+        ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
+
+        if(requestLine.getUrlPath().getPath().equals("/register.html")) {
+            logger.info("redirect to /registration/index.html");
+            responseLine.redirect(httpRequest, httpResponse, "/registration/index.html");
+            return;
+        }
 
         byte[] fileContent = FileReader.readFileFromUrlPath(requestLine.getUrlPath());
         String contentType = FileReader.guessContentTypeFromUrlPath(requestLine.getUrlPath());
 
         //httpResponse.;
-        ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
         Header responseHeader = httpResponse.getHeader();
 
         responseLine.success();
