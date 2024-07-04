@@ -14,6 +14,7 @@ public class MyHandlerMapper {
 
     private MyHandlerMapper() {
         addHandler("/create", new UserCreateHandler(new UserService(new UserRepository())));
+        addHandler("/registration", new RegistrationHandler());
     }
 
     public static MyHandlerMapper getInstance() {
