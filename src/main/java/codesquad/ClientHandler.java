@@ -2,11 +2,9 @@ package codesquad;
 
 import handler.MyHandler;
 import handler.MyHandlerMapper;
-import http.Http;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.startline.RequestLine;
-import http.startline.ResponseLine;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,6 +34,7 @@ public class ClientHandler implements Runnable {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             HttpRequest httpRequest = HttpRequest.generateHttpRequest(bufferedReader);
             HttpResponse httpResponse = HttpResponse.generateHttpResponse();
+
             RequestLine requestLine = (RequestLine) httpRequest.getStartLine();
             logger.info("Request: {}", httpRequest);
             // resource/static/index.html 파일을 읽어서 보내기
@@ -44,25 +43,11 @@ public class ClientHandler implements Runnable {
             MyHandlerMapper handlerMapper = MyHandlerMapper.getInstance();
 
             MyHandler temp = handlerMapper.findHandler(requestLine.getUrlPath().getPath());
-            if (temp == null) {
-                logger.error("Handler not found");
-                return;
-            }
 
             temp.handle(httpRequest, httpResponse);
+            logger.info("Response: {}", httpResponse);
 
-            // TODO: 함수로 변경
-            String responseLine = ((ResponseLine) httpResponse.getStartLine()).toString();
-            String responseHeaderLine = httpResponse.getHeader().toString();
-
-            logger.info("ResponseLine\n{}", responseLine);
-            logger.info("Response Header\n{}", responseHeaderLine);
-
-            clientOutput.write(responseLine.getBytes());
-            clientOutput.write(responseHeaderLine.getBytes());
-            clientOutput.write("\r\n".getBytes());
-            clientOutput.write(httpResponse.getBody());
-            clientOutput.flush();
+            writeResponse(clientOutput, httpResponse);
 
         } catch (FileNotFoundException e) {
             logger.error("File not found: {}", e.getMessage());
@@ -75,5 +60,21 @@ public class ClientHandler implements Runnable {
                 logger.error("Error closing client socket: {}", e.getMessage());
             }
         }
+    }
+
+    private void writeResponse(OutputStream clientOutput, HttpResponse httpResponse) throws IOException {
+        String responseLine = httpResponse.getStartLine().toString();
+        String responseHeaderLine = httpResponse.getHeader().toString();
+        String body = new String(httpResponse.getBody());
+
+        // logger.info("ResponseLine\n{}", responseLine);
+        // logger.info("Response Header\n{}", responseHeaderLine);
+        // logger.info("Response Body\n{}", body);
+
+        clientOutput.write(responseLine.getBytes());
+        clientOutput.write(responseHeaderLine.getBytes());
+        clientOutput.write("\r\n".getBytes());
+        clientOutput.write(httpResponse.getBody());
+        clientOutput.flush();
     }
 }
