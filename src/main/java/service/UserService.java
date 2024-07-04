@@ -15,6 +15,11 @@ public class UserService {
     }
 
     public void createUser(UserDto userDto) {
+        if (userRepository.getUser(userDto.userId()) != null) {
+            logger.error("User already exists: {}", userDto.userId());
+            return;
+        }
+
         userRepository.addUser(userDto.toEntity());
 
         logger.info("User created: {}", userRepository.getUser(userDto.userId()));
