@@ -31,7 +31,7 @@ public class Http {
     }
 
     public static Http generateHttpResponse() throws IOException {
-        Header header = Header.of();
+        Header header = Header.emptyHeader();
         return new Http(new ResponseLine(), header, null);
     }
 

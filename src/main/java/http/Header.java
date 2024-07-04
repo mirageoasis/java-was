@@ -13,8 +13,12 @@ public class Header {
         this.header = headerMapper(headerString);
     }
 
-    public static Header of() {
-        return new Header("");
+    private Header() {
+        this.header = new HashMap<>();
+    }
+
+    public static Header emptyHeader() {
+        return new Header();
     }
 
     public static Header from(BufferedReader bufferedReader) throws IOException {
