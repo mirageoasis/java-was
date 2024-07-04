@@ -3,6 +3,8 @@ package codesquad;
 import handler.MyHandler;
 import handler.MyHandlerMapper;
 import http.Http;
+import http.HttpRequest;
+import http.HttpResponse;
 import http.startline.RequestLine;
 import http.startline.ResponseLine;
 import java.io.BufferedReader;
@@ -32,8 +34,8 @@ public class ClientHandler implements Runnable {
         ) {
             // HTTP 응답을 생성합니다.
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            Http httpRequest = Http.generateHttpRequest(bufferedReader);
-            Http httpResponse = Http.generateHttpResponse();
+            HttpRequest httpRequest = HttpRequest.generateHttpRequest(bufferedReader);
+            HttpResponse httpResponse = HttpResponse.generateHttpResponse();
             RequestLine requestLine = (RequestLine) httpRequest.getStartLine();
             logger.info("Request: {}", httpRequest);
             // resource/static/index.html 파일을 읽어서 보내기
