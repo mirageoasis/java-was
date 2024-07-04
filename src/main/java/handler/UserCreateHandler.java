@@ -2,6 +2,8 @@ package handler;
 
 import dto.UserDto;
 import http.Http;
+import http.HttpResponse;
+import http.ResponseWriter;
 import http.startline.RequestLine;
 import http.startline.ResponseLine;
 import java.util.Map;
@@ -17,8 +19,8 @@ public class UserCreateHandler extends MyHandler {
 
     @Override
     void doGet(Http httpRequest, Http httpResponse) {
-        httpResponse.setBody("Hello World!\n".getBytes());
         RequestLine startLine = (RequestLine) httpRequest.getStartLine();
+
         Map<String, String> queryParams = startLine.getUrlPath().getQueryParameters();
         UserDto userDto = new UserDto(
             queryParams.get("userId"),
@@ -30,10 +32,8 @@ public class UserCreateHandler extends MyHandler {
 
         ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
 
-
-
-
-        responseLine.success();
+        //responseLine.success();
+        ResponseWriter.success();
 
         httpResponse.getHeader().addHeader("Content-Type", "text/html");
         httpResponse.getHeader().addHeader("Content-Length", String.valueOf(httpResponse.getBody().length));
