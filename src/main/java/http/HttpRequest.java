@@ -27,11 +27,11 @@ public class HttpRequest extends Http {
 
     private static byte[] generateBody(BufferedReader bufferedReader, Header header)
         throws IOException {
-        if (header.getHeader("Content-Length").isEmpty()) {
+        if (header.getValue("Content-Length").isEmpty()) {
             return new byte[0];
         }
 
-        int contentLength = Integer.parseInt(header.getHeader("Content-Length"));
+        int contentLength = Integer.parseInt(header.getValue("Content-Length"));
         char[] body = new char[contentLength];
         bufferedReader.read(body, 0, contentLength);
 

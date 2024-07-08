@@ -30,7 +30,7 @@ public class UserCreateHandler extends MyHandler {
             bodyParams.get("email")
         );
         userService.createUser(userDto);
-        httpResponse.getHeader().addHeader("Content-Type", "text/html");
+        httpResponse.getHeader().addKey("Content-Type", "text/html");
         logger.info("redirect to /index.html");
         ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
     }

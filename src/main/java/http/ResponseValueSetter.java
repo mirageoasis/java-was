@@ -21,7 +21,7 @@ public class ResponseValueSetter {
         responseLine.setStatusMessage("OK");
 
         // header
-        responseHeader.addHeader("Content-Length", String.valueOf(body.length));
+        responseHeader.addKey("Content-Length", String.valueOf(body.length));
 
         // body
         httpResponse.setBody(body);
@@ -35,7 +35,7 @@ public class ResponseValueSetter {
         responseLineSet(responseLine, HTTP_VERSION, 200, "OK");
 
         // header
-        responseHeader.addHeader("Content-Length", "0");
+        responseHeader.addKey("Content-Length", "0");
 
         // body
         httpResponse.setBody(new byte[0]);
@@ -48,7 +48,7 @@ public class ResponseValueSetter {
         responseLineSet(responseLine, HTTP_VERSION, 302, "Found");
 
         Header responseHeader = httpResponse.getHeader();
-        responseHeader.addHeader("Location", urlPath);
+        responseHeader.addKey("Location", urlPath);
 
         httpResponse.setStartLine(responseLine);
     }
@@ -60,7 +60,7 @@ public class ResponseValueSetter {
         // error의 코드를 받아온다.
         responseLineSet(responseLine, HTTP_VERSION, error.getStatusCode(), error.getMessage());
 
-        responseHeader.addHeader("Content-Length", "0");
+        responseHeader.addKey("Content-Length", "0");
 
         httpResponse.setBody(new byte[0]);
     }
