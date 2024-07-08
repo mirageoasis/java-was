@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import util.FileReader;
 
 public class StaticHandler extends MyHandler {
-    private final Logger logger = Logger.getLogger(StaticHandler.class.getName());
+    private static final Logger logger = Logger.getLogger(StaticHandler.class.getName());
 
 
     @Override

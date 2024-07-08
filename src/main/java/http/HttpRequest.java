@@ -3,7 +3,6 @@ package http;
 import http.startline.RequestLine;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Map;
 import util.QueryParserUtil;
 
@@ -40,6 +39,6 @@ public class HttpRequest extends Http {
     }
 
     public Map<String, String> getBodyParams() {
-        return QueryParserUtil.parseQuery(Arrays.toString(this.getBody()));
+        return QueryParserUtil.parseQuery(new String(this.getBody()));
     }
 }
