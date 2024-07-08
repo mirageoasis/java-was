@@ -4,8 +4,8 @@ import http.startline.RequestLine;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
+import util.QueryParserUtil;
 
 public class HttpRequest extends Http {
 
@@ -40,20 +40,6 @@ public class HttpRequest extends Http {
     }
 
     public Map<String, String> getBodyParams() {
-        return parseQueryParameters(Arrays.toString(this.getBody()));
-    }
-
-    private HashMap<String, String> parseQueryParameters(String queryString) {
-        String[] params = queryString.split("&");
-        HashMap<String, String> ret = new HashMap<>();
-        for (String param : params) {
-            String[] keyValue = param.split("=", 2);
-            if (keyValue.length == 2) {
-                ret.put(keyValue[0], keyValue[1]);
-            } else {
-                ret.put(keyValue[0], "");
-            }
-        }
-        return ret;
+        return QueryParserUtil.parseQuery(Arrays.toString(this.getBody()));
     }
 }
