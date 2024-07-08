@@ -16,7 +16,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        userRepository = new UserRepository();
+        userRepository = UserRepository.getInstance();
         userService = new UserService(userRepository);
     }
 

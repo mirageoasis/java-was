@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Test;
 
 class UserRepositoryTest {
 
-    private UserRepository userRepository = new UserRepository();
+    private UserRepository userRepository = UserRepository.getInstance();
 
     @BeforeEach
     void setUp() {
-        userRepository = new UserRepository();
+        userRepository = UserRepository.getInstance();
     }
 
     @Test

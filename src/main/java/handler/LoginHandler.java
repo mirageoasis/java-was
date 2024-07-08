@@ -13,7 +13,7 @@ import util.LoggerUtil;
 
 public class LoginHandler extends MyHandler{
     private static final Logger logger = LoggerUtil.getLogger();
-    private final UserService userService = new UserService(new UserRepository());
+    private final UserService userService = new UserService(UserRepository.getInstance());
     private final SessionRepository sessionRepository = new SessionRepository();
 
     @Override

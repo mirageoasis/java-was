@@ -14,7 +14,7 @@ public class MyHandlerMapper {
     private final Map<String, MyHandler> handlerMap = new HashMap<>();
 
     private MyHandlerMapper() {
-        addHandler("/create", new UserCreateHandler(new UserService(new UserRepository())));
+        addHandler("/create", new UserCreateHandler(new UserService(UserRepository.getInstance())));
         addHandler("/registration", new RegistrationHandler());
         addHandler("/loginPage", new LoginPageHandler());
         addHandler("/login", new LoginHandler());
