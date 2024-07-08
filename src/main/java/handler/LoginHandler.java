@@ -28,7 +28,7 @@ public class LoginHandler extends MyHandler{
         User user = userService.findUserById(userId);
         if (user == null || !user.getPassword().equals(password)) {
             logger.info("Login fail");
-            ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
+            ResponseValueSetter.redirect(httpRequest, httpResponse, "user/login_failed.html");
             return;
         }
         logger.info("Login success");
