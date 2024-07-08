@@ -15,7 +15,7 @@ public class UserRepository {
         users.remove(userId);
     }
 
-    public User getUser(String userId) {
+    public User getUserById(String userId) {
         return users.get(userId);
     }
 }

@@ -24,7 +24,7 @@ class UserServiceTest {
     void createUser() {
         userService.createUser(userDto);
 
-        User savedUser = userRepository.getUser("userId");
+        User savedUser = userRepository.getUserById("userId");
 
         assertAll(
             () -> assertEquals(userDto.userId(), savedUser.getUserId()),

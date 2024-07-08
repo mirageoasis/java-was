@@ -18,7 +18,8 @@ public class LoginFilter implements Filter{
     public void doFilter(HttpRequest httpRequest, HttpResponse httpResponse,
         FilterChain filterChain) throws IOException {
         // 여기서 쿠키를 확인한다.
-        //String cookieHeader = httpRequest.getHeader().getHeader()
+        String cookieStringValue = httpRequest.getHeader().getValue("Cookie");
+
 
         // 쿠키가 있다면 Session에서 유저 정보를 가져온다.
         filterChain.doFilter(httpRequest, httpResponse);

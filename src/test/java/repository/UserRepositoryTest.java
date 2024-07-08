@@ -23,7 +23,7 @@ class UserRepositoryTest {
         User user = new User("testId", "testPassword", "testName", "testEmail");
         userRepository.addUser(user);
 
-        User savedUser = userRepository.getUser("testId");
+        User savedUser = userRepository.getUserById("testId");
 
         assertAll(
             () -> assertEquals("testId", savedUser.getUserId()),
