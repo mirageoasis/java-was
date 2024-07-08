@@ -3,7 +3,7 @@ package handler;
 import dto.UserDto;
 import http.HttpRequest;
 import http.HttpResponse;
-import http.ResponseWriter;
+import http.ResponseValueSetter;
 import java.util.Map;
 import service.UserService;
 
@@ -28,6 +28,6 @@ public class UserCreateHandler extends MyHandler {
         userService.createUser(userDto);
         httpResponse.getHeader().addHeader("Content-Type", "text/html");
 
-        ResponseWriter.redirect(httpRequest, httpResponse, "/index.html");
+        ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
     }
 }

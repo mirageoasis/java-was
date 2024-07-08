@@ -4,7 +4,7 @@ import exception.MethodNotAllowed;
 import http.HttpMethod;
 import http.HttpRequest;
 import http.HttpResponse;
-import http.ResponseWriter;
+import http.ResponseValueSetter;
 import http.startline.RequestLine;
 import java.io.IOException;
 import org.slf4j.Logger;
@@ -27,9 +27,9 @@ public abstract class MyHandler {
     }
 
     void doGet(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException{
-        ResponseWriter.fail(httpResponse, new MethodNotAllowed());
+        ResponseValueSetter.fail(httpResponse, new MethodNotAllowed());
     }
     void doPost(HttpRequest httpRequest, HttpResponse httpResponse){
-        ResponseWriter.fail(httpResponse, new MethodNotAllowed());
+        ResponseValueSetter.fail(httpResponse, new MethodNotAllowed());
     }
 }

@@ -5,17 +5,18 @@ import http.startline.ResponseLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ResponseWriter {
+public class ResponseValueSetter {
 
     public static final String CRLF = "\r\n";
-    private static final Logger logger = LoggerFactory.getLogger(ResponseWriter.class);
+    public static final String HTTP_VERSION = "HTTP/1.1";
+    private static final Logger logger = LoggerFactory.getLogger(ResponseValueSetter.class);
 
     public static void success(HttpResponse httpResponse, byte[] body) {
         ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
         Header responseHeader = httpResponse.getHeader();
 
         // start line
-        responseLine.setVersion("HTTP/1.1");
+        responseLine.setVersion(HTTP_VERSION);
         responseLine.setStatusCode(200);
         responseLine.setStatusMessage("OK");
 
@@ -31,9 +32,7 @@ public class ResponseWriter {
         Header responseHeader = httpResponse.getHeader();
 
         // start line
-        responseLine.setVersion("HTTP/1.1");
-        responseLine.setStatusCode(200);
-        responseLine.setStatusMessage("OK");
+        responseLineSet(responseLine, HTTP_VERSION, 200, "OK");
 
         // header
         responseHeader.addHeader("Content-Length", "0");
@@ -42,12 +41,11 @@ public class ResponseWriter {
         httpResponse.setBody(new byte[0]);
     }
 
-    public static void redirect(HttpRequest httpRequest, HttpResponse httpResponse, String urlPath) {
+    public static void redirect(HttpRequest httpRequest, HttpResponse httpResponse,
+        String urlPath) {
         ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
 
-        responseLine.setStatusCode(302);
-        responseLine.setStatusMessage("Found");
-        responseLine.setVersion("HTTP/1.1");
+        responseLineSet(responseLine, HTTP_VERSION, 302, "Found");
 
         Header responseHeader = httpResponse.getHeader();
         responseHeader.addHeader("Location", urlPath);
@@ -60,12 +58,21 @@ public class ResponseWriter {
         ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
         Header responseHeader = httpResponse.getHeader();
         // error의 코드를 받아온다.
-        responseLine.setVersion("HTTP/1.1");
-        responseLine.setStatusCode(error.getStatusCode());
-        responseLine.setStatusMessage(error.getMessage());
+        responseLineSet(responseLine, HTTP_VERSION, error.getStatusCode(), error.getMessage());
 
         responseHeader.addHeader("Content-Length", "0");
 
         httpResponse.setBody(new byte[0]);
+    }
+
+    private static void responseLineSet(
+        ResponseLine responseLine,
+        String httpVersion,
+        int statusCode,
+        String statusMessage
+    ) {
+        responseLine.setVersion(HTTP_VERSION);
+        responseLine.setStatusCode(statusCode);
+        responseLine.setStatusMessage(statusMessage);
     }
 }

@@ -3,7 +3,7 @@ package handler;
 import http.Header;
 import http.HttpRequest;
 import http.HttpResponse;
-import http.ResponseWriter;
+import http.ResponseValueSetter;
 import http.startline.RequestLine;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -20,7 +20,7 @@ public class StaticHandler extends MyHandler {
 
         if(requestLine.getUrlPath().getPath().equals("/register.html")) {
             logger.info("redirect to /registration/index.html");
-            ResponseWriter.redirect(httpRequest, httpResponse, "/registration/index.html");
+            ResponseValueSetter.redirect(httpRequest, httpResponse, "/registration/index.html");
             return;
         }
 
@@ -30,6 +30,6 @@ public class StaticHandler extends MyHandler {
 
 
         //httpResponse.;
-        ResponseWriter.success(httpResponse, fileContent);
+        ResponseValueSetter.success(httpResponse, fileContent);
     }
 }
