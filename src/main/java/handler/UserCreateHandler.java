@@ -4,7 +4,6 @@ import dto.UserDto;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.ResponseWriter;
-import http.startline.RequestLine;
 import java.util.Map;
 import service.UserService;
 
@@ -18,24 +17,17 @@ public class UserCreateHandler extends MyHandler {
     }
 
     @Override
-    void doGet(HttpRequest httpRequest, HttpResponse httpResponse) {
-        RequestLine startLine = (RequestLine) httpRequest.getStartLine();
-
-        Map<String, String> queryParams = startLine.getUrlPath().getQueryParameters();
+    void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
+        Map<String, String> bodyParams = httpRequest.getBodyParams();
         UserDto userDto = new UserDto(
-            queryParams.get("userId"),
-            queryParams.get("password"),
-            queryParams.get("name"),
-            queryParams.get("email")
+            bodyParams.get("userId"),
+            bodyParams.get("password"),
+            bodyParams.get("name"),
+            bodyParams.get("email")
         );
         userService.createUser(userDto);
         httpResponse.getHeader().addHeader("Content-Type", "text/html");
 
         ResponseWriter.redirect(httpRequest, httpResponse, "/index.html");
-    }
-
-    @Override
-    void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
-
     }
 }

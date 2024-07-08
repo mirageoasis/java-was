@@ -32,8 +32,4 @@ public class StaticHandler extends MyHandler {
         //httpResponse.;
         ResponseWriter.success(httpResponse, fileContent);
     }
-
-    @Override
-    void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
-    }
 }

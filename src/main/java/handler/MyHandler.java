@@ -1,14 +1,16 @@
 package handler;
 
+import exception.MethodNotAllowed;
 import http.HttpMethod;
 import http.HttpRequest;
 import http.HttpResponse;
+import http.ResponseWriter;
 import http.startline.RequestLine;
 import java.io.IOException;
 import org.slf4j.Logger;
 import util.LoggerUtil;
 
-abstract public class MyHandler {
+public abstract class MyHandler {
     private static final Logger logger = LoggerUtil.getLogger();
 
     public void handle(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
@@ -24,6 +26,10 @@ abstract public class MyHandler {
         }
     }
 
-    abstract void doGet(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException;
-    abstract void doPost(HttpRequest httpRequest, HttpResponse httpResponse);
+    void doGet(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException{
+        ResponseWriter.fail(httpResponse, new MethodNotAllowed());
+    }
+    void doPost(HttpRequest httpRequest, HttpResponse httpResponse){
+        ResponseWriter.fail(httpResponse, new MethodNotAllowed());
+    }
 }

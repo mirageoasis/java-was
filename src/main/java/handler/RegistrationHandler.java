@@ -11,9 +11,4 @@ public class RegistrationHandler extends MyHandler{
     void doGet(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
         ResponseWriter.redirect(httpRequest, httpResponse, "/registration/index.html");
     }
-
-    @Override
-    void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
-
-    }
 }
