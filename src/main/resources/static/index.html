@@ -12,14 +12,7 @@
       <header class="header">
         <a href="/"><img src="./img/signiture.svg" /></a>
         <ul class="header__menu">
-          <li class="header__menu__item">
-            <a class="btn btn_contained btn_size_s" href="/loginPage">로그인</a>
-          </li>
-          <li class="header__menu__item">
-            <a class="btn btn_ghost btn_size_s" href="/registration">
-              회원 가입
-            </a>
-          </li>
+          {header-menu}
         </ul>
       </header>
       <div class="wrapper">
@@ -148,37 +141,15 @@
   </body>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // 로그인 상태 확인
-      const isLoggedIn = localStorage.getItem('isLoggedIn');
-      const username = localStorage.getItem('username');
+    const btn = document.getElementById('logout-btn')
+    btn?.addEventListener('click', function() {
+      // 동적으로 폼을 생성하여 POST 요청을 보냄
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/logout';
 
-      const headerMenu = document.querySelector('.header__menu');
-      headerMenu.innerHTML = ''; // 기존 메뉴 내용 초기화
-
-      if (isLoggedIn && username) {
-        // 로그인 상태일 경우 사용자 이름 표시
-        const userNameItem = document.createElement('li');
-        userNameItem.classList.add('header__menu__item');
-        userNameItem.textContent = `Hello, ${username}`;
-        headerMenu.appendChild(userNameItem);
-
-        const logoutItem = document.createElement('li');
-        logoutItem.classList.add('header__menu__item');
-        logoutItem.innerHTML = '<a class="btn btn_contained btn_size_s" href="/logout">로그아웃</a>';
-        headerMenu.appendChild(logoutItem);
-      } else {
-        // 로그인 상태가 아닐 경우 로그인 버튼 표시
-        const loginItem = document.createElement('li');
-        loginItem.classList.add('header__menu__item');
-        loginItem.innerHTML = '<a class="btn btn_contained btn_size_s" href="/loginPage">로그인</a>';
-        headerMenu.appendChild(loginItem);
-
-        const registerItem = document.createElement('li');
-        registerItem.classList.add('header__menu__item');
-        registerItem.innerHTML = '<a class="btn btn_ghost btn_size_s" href="/registration">회원 가입</a>';
-        headerMenu.appendChild(registerItem);
-      }
+      document.body.appendChild(form);
+      form.submit();
     });
   </script>
 </html>
