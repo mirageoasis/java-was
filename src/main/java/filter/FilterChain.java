@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import util.LoggerUtil;
 import util.RequestContext;
 
 public class FilterChain {
 
-    private static final Logger logger = LoggerFactory.getLogger(FilterChain.class);
+    private static final Logger logger = LoggerUtil.getLogger();
     // filter의 이름과 filter 객체를 매핑
     private final Map<Pattern, Filter> filterMapping;
 

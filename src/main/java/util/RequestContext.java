@@ -28,6 +28,7 @@ public class RequestContext {
     }
 
     public Session getSession() {
+        // return SessionManager.getInstance().getSession(this.sessionId);
         return session;
     }
 }

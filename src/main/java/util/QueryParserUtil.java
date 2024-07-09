@@ -5,10 +5,10 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 public class QueryParserUtil {
-    private final static Logger logger = Logger.getLogger(QueryParserUtil.class.getName());
+    private final static Logger logger = LoggerUtil.getLogger();
 
 
     public static Map<String, String> parseQuery(String queryString) {

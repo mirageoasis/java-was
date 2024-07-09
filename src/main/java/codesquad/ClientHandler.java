@@ -17,7 +17,7 @@ import util.LoggerUtil;
 public class ClientHandler implements Runnable {
 
     private final Socket clientSocket;
-    private final Logger logger = LoggerUtil.getLogger();
+    private static final Logger logger = LoggerUtil.getLogger();
 
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;

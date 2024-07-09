@@ -6,11 +6,12 @@ import http.HttpResponse;
 import http.ResponseValueSetter;
 import http.startline.RequestLine;
 import java.io.IOException;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 import util.FileReader;
+import util.LoggerUtil;
 
 public class StaticHandler extends MyHandler {
-    private static final Logger logger = Logger.getLogger(StaticHandler.class.getName());
+    private static final Logger logger = LoggerUtil.getLogger();
 
 
     @Override
