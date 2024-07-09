@@ -3,38 +3,47 @@ package repository;
 import handler.Session;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class SessionRepository {
+public class SessionManager {
+    private static final SessionManager instance = new SessionManager();
+    private final Map<Integer, Session> sessions;
+    private int nextSessionId;
 
-    private final Map<Integer, Session> sessions = new ConcurrentHashMap<>();
-    private static final AtomicInteger count = new AtomicInteger(0);
-
-    public Integer addSession(Session session) {
-        // 1. 세션 숫자를 더해주기
-        Integer sessionId = findEmptySession();
-
-        // 2. sessions에 session을 저장
-        sessions.put(sessionId, session);
-        return sessionId;
+    private SessionManager() {
+        sessions = new ConcurrentHashMap<>();
+        nextSessionId = 1;
     }
 
-    private synchronized Integer findEmptySession() {
-        // 1. sessions에서 빈 세션을 찾기
-        Integer sessionId = count.incrementAndGet();
+    public static SessionManager getInstance() {
+        return instance;
+    }
 
-        while (sessions.containsKey(sessionId)) {
-            sessionId = count.incrementAndGet();
+    public synchronized Session createSession() {
+        while (sessions.containsKey(nextSessionId)) {
+            nextSessionId++;
         }
-
-        return sessionId;
+        Session session = new Session(nextSessionId);
+        sessions.put(nextSessionId, session);
+        nextSessionId++;
+        return session;
     }
 
-    public Session getSession(Integer sessionId) {
+    public Session getSession(int sessionId) {
         return sessions.get(sessionId);
     }
 
-    public void removeSession(Integer sessionId) {
+    public synchronized void invalidateSession(int sessionId) {
         sessions.remove(sessionId);
+    }
+
+    public synchronized Session findOrCreateEmptySession() {
+        for (int id = 1; id < nextSessionId; id++) {
+            if (!sessions.containsKey(id)) {
+                Session session = new Session(id);
+                sessions.put(id, session);
+                return session;
+            }
+        }
+        return createSession();
     }
 }

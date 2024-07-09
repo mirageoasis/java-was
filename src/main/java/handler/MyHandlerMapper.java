@@ -18,7 +18,7 @@ public class MyHandlerMapper {
         addHandler("/registration", new RegistrationHandler());
         addHandler("/loginPage", new LoginPageHandler());
         addHandler("/login", new LoginHandler());
-        //addHandler("/logout", new LogoutHandler());
+        addHandler("/logout", new LogoutHandler());
     }
 
     public static MyHandlerMapper getInstance() {

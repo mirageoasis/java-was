@@ -9,7 +9,7 @@ import util.LoggerUtil;
 public class UserRepository {
     private static final Logger logger = LoggerUtil.getLogger();
     private final Map<String, User> users = new ConcurrentHashMap<>();
-    private static UserRepository instance;
+    private static UserRepository instance= new UserRepository();
 
     private UserRepository() {
     }
@@ -41,9 +41,6 @@ public class UserRepository {
     }
 
     public static UserRepository getInstance() {
-        if (instance == null) {
-            instance = new UserRepository();
-        }
         return instance;
     }
 }
