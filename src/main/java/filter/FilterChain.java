@@ -54,7 +54,6 @@ public class FilterChain {
         }
 
         // handler 매핑하기
-        RequestContext context = RequestContext.current();
         if (RequestContext.current().getSession() != null){
             logger.info("session id: {}", RequestContext.current().getSession().getSessionId());
         }

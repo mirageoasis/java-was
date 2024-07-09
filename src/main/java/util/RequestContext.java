@@ -1,19 +1,20 @@
 package util;
 
 import handler.Session;
+import http.startline.UrlPath;
 
 public class RequestContext {
     private static final ThreadLocal<RequestContext> threadLocal = new ThreadLocal<>();
 
-    private final String urlPath;
+    private final UrlPath urlPath;
     private final Session session;
 
-    private RequestContext(String urlPath, Session session) {
+    private RequestContext(UrlPath urlPath, Session session) {
         this.urlPath = urlPath;
         this.session = session;
     }
 
-    public static RequestContext of(String urlPath, Session session) {
+    public static RequestContext of(UrlPath urlPath, Session session) {
         RequestContext requestContext = new RequestContext(urlPath, session);
         threadLocal.set(requestContext);
         return requestContext;
@@ -23,7 +24,7 @@ public class RequestContext {
         return threadLocal.get();
     }
 
-    public String getUrlPath() {
+    public UrlPath getUrlPath() {
         return urlPath;
     }
 
