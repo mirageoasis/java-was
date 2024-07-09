@@ -10,9 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import util.RequestContext;
 
 public class FilterChain {
 
+    private static final Logger logger = LoggerFactory.getLogger(FilterChain.class);
     // filter의 이름과 filter 객체를 매핑
     private final Map<Pattern, Filter> filterMapping;
 
@@ -50,6 +54,11 @@ public class FilterChain {
         }
 
         // handler 매핑하기
+        RequestContext context = RequestContext.current();
+        if (RequestContext.current().getSession() != null){
+            logger.info("session id: {}", RequestContext.current().getSession().getSessionId());
+        }
+
         MyHandlerMapper handlerMapper = MyHandlerMapper.getInstance();
         RequestLine requestLine = (RequestLine) httpRequest.getStartLine();
         MyHandler chosenHandler = handlerMapper.findHandler(requestLine.getUrlPath().getPath());

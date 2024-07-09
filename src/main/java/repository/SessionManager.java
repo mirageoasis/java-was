@@ -28,7 +28,11 @@ public class SessionManager {
         return session;
     }
 
-    public Session getSession(int sessionId) {
+    public Session getSession(Integer sessionId) {
+        if (sessionId == null) {
+            return null;
+        }
+
         return sessions.get(sessionId);
     }
 

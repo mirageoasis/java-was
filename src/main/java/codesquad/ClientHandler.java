@@ -45,6 +45,8 @@ public class ClientHandler implements Runnable {
             logger.error("File not found: {}", e.getMessage());
         } catch (IOException e) {
             logger.error("Error handling client: {}", e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error: {}", e.getMessage());
         } finally {
             try {
                 clientSocket.close();
@@ -54,7 +56,8 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void sendResponse(OutputStream clientOutput, HttpResponse httpResponse) throws IOException {
+    private void sendResponse(OutputStream clientOutput, HttpResponse httpResponse)
+        throws IOException {
         ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
         String responseHeaderLine = httpResponse.getHeader().toString();
         String body = new String(httpResponse.getBody());

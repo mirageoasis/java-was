@@ -18,6 +18,12 @@ public class StaticHandler extends MyHandler {
         RequestLine requestLine = (RequestLine) httpRequest.getStartLine();
         Header responseHeader = httpResponse.getHeader();
 
+//        if(requestLine.getUrlPath().getPath().equals("/index.html")) {
+//            // context로 로그인 여부 확인
+//            //ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
+//            return;
+//        }
+
         if(requestLine.getUrlPath().getPath().equals("/register.html")) {
             logger.info("redirect to /registration/index.html");
             ResponseValueSetter.redirect(httpRequest, httpResponse, "/registration/index.html");
