@@ -1,20 +1,18 @@
 package util;
 
-import model.User;
-
 public class RequestContext {
     private static final ThreadLocal<RequestContext> threadLocal = new ThreadLocal<>();
 
     private final String urlPath;
-    private final User user;
+    private final int sessionId;
 
-    private RequestContext(String urlPath, User user) {
+    private RequestContext(String urlPath, int sessionId) {
         this.urlPath = urlPath;
-        this.user = user;
+        this.sessionId = sessionId;
     }
 
-    public static RequestContext of(String urlPath, User user) {
-        RequestContext requestContext = new RequestContext(urlPath, user);
+    public static RequestContext of(String urlPath, int sessionId) {
+        RequestContext requestContext = new RequestContext(urlPath, sessionId);
         threadLocal.set(requestContext);
         return requestContext;
     }
@@ -27,7 +25,7 @@ public class RequestContext {
         return urlPath;
     }
 
-    public User getUser() {
-        return user;
+    public int getSessionId() {
+        return sessionId;
     }
 }
