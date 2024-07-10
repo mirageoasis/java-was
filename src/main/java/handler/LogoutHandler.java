@@ -15,6 +15,7 @@ public class LogoutHandler extends MyHandler {
         if (session != null) {
             SessionManager.getInstance().invalidateSession(session.getSessionId());
         }
+        httpResponse.getHeader().addKey("Set-Cookie", "sid=; Path=/; Max-Age=0");
         ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
     }
 }

@@ -34,7 +34,8 @@ public class LoginHandler extends MyHandler{
         newSession.setAttribute(Session.USER, user);
 
         int sessionId = newSession.getSessionId();
-        httpResponse.getHeader().addKey("Set-Cookie", "sid=" + sessionId + "; Path=/");
+        httpResponse.getHeader().addKey("Set-Cookie", "sid=" + sessionId + "; Path=/" + "; HttpOnly");
+
         ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
     }
 }
