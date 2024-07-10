@@ -14,12 +14,12 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import util.LoggerUtil;
 
-public class ClientHandler implements Runnable {
+public class ClientThread implements Runnable {
 
     private final Socket clientSocket;
     private static final Logger logger = LoggerUtil.getLogger();
 
-    public ClientHandler(Socket clientSocket) {
+    public ClientThread(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 

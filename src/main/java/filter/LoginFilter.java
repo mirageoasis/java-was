@@ -1,13 +1,13 @@
 package filter;
 
-import handler.Session;
+import session.Session;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.startline.RequestLine;
 import http.startline.UrlPath;
 import java.io.IOException;
 import org.slf4j.Logger;
-import repository.SessionManager;
+import session.SessionManager;
 import util.CookieUtil;
 import util.LoggerUtil;
 import util.RequestContext;

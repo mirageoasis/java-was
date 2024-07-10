@@ -6,9 +6,10 @@ import http.ResponseValueSetter;
 import java.util.Map;
 import model.User;
 import org.slf4j.Logger;
-import repository.SessionManager;
+import session.SessionManager;
 import repository.UserRepository;
 import service.UserService;
+import session.Session;
 import util.LoggerUtil;
 
 public class LoginHandler extends MyHandler{

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import model.User;
 import repository.UserRepository;
+import session.Session;
 import util.RequestContext;
 
 public class UserListHandler extends MyHandler{
