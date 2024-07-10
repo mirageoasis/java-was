@@ -9,6 +9,12 @@ public class ResponseValueSetter {
 
     public static final String CRLF = "\r\n";
     public static final String HTTP_VERSION = "HTTP/1.1";
+    public static final String CONTENT_TYPE = "Content-Type";
+    public static final String CONTENT_LENGTH = "Content-Length";
+    public static final String LOCATION = "Location";
+    public static final String OK = "ok";
+    public static final String REDIRECT = "redirect";
+    public static final Integer OK_CODE = 200;
     private static final Logger logger = LoggerFactory.getLogger(ResponseValueSetter.class);
 
     public static void success(HttpResponse httpResponse, byte[] body) {
@@ -16,12 +22,10 @@ public class ResponseValueSetter {
         Header responseHeader = httpResponse.getHeader();
 
         // start line
-        responseLine.setVersion(HTTP_VERSION);
-        responseLine.setStatusCode(200);
-        responseLine.setStatusMessage("OK");
+        responseLineSet(responseLine, HTTP_VERSION, OK_CODE, OK);
 
         // header
-        responseHeader.addKey("Content-Length", String.valueOf(body.length));
+        responseHeader.addKey(CONTENT_LENGTH, String.valueOf(body.length));
 
         // body
         httpResponse.setBody(body);
@@ -32,10 +36,10 @@ public class ResponseValueSetter {
         Header responseHeader = httpResponse.getHeader();
 
         // start line
-        responseLineSet(responseLine, HTTP_VERSION, 200, "OK");
+        responseLineSet(responseLine, HTTP_VERSION, OK_CODE, OK);
 
         // header
-        responseHeader.addKey("Content-Length", "0");
+        responseHeader.addKey(CONTENT_LENGTH, "0");
 
         // body
         httpResponse.setBody(new byte[0]);
@@ -48,7 +52,7 @@ public class ResponseValueSetter {
         responseLineSet(responseLine, HTTP_VERSION, 302, "Found");
 
         Header responseHeader = httpResponse.getHeader();
-        responseHeader.addKey("Location", urlPath);
+        responseHeader.addKey(LOCATION, urlPath);
 
         httpResponse.setStartLine(responseLine);
     }
@@ -60,7 +64,7 @@ public class ResponseValueSetter {
         // error의 코드를 받아온다.
         responseLineSet(responseLine, HTTP_VERSION, error.getStatusCode(), error.getMessage());
 
-        responseHeader.addKey("Content-Length", "0");
+        responseHeader.addKey(CONTENT_LENGTH, "0");
 
         httpResponse.setBody(new byte[0]);
     }
@@ -71,7 +75,7 @@ public class ResponseValueSetter {
         int statusCode,
         String statusMessage
     ) {
-        responseLine.setVersion(HTTP_VERSION);
+        responseLine.setVersion(httpVersion);
         responseLine.setStatusCode(statusCode);
         responseLine.setStatusMessage(statusMessage);
     }
