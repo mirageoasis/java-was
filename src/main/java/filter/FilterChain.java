@@ -39,9 +39,6 @@ public class FilterChain {
         if (count < filters.size()) {
             Filter filter = filters.get(count);
             count++;
-            // TODO: filterMapping을 사용해서 url과 맞는 기능만 doFilter를 소환
-
-
             filter.doFilter(httpRequest, httpResponse, this);
             return;
         }
