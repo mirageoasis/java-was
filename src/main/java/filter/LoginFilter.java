@@ -1,13 +1,14 @@
 package filter;
 
-import java.util.Optional;
-import session.Session;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.startline.RequestLine;
 import http.startline.UrlPath;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.regex.Pattern;
 import org.slf4j.Logger;
+import session.Session;
 import session.SessionManager;
 import util.CookieUtil;
 import util.LoggerUtil;
@@ -15,7 +16,7 @@ import util.RequestContext;
 
 public class LoginFilter implements Filter {
     private static final Logger logger = LoggerUtil.getLogger();
-
+    private static final Pattern pattern = Pattern.compile(".*");
 
     @Override
     public void init() {
@@ -26,6 +27,13 @@ public class LoginFilter implements Filter {
     public void doFilter(HttpRequest httpRequest, HttpResponse httpResponse,
         FilterChain filterChain) throws IOException {
         // 여기서 쿠키를 확인한다.
+        RequestLine startLine = (RequestLine) httpRequest.getStartLine();
+
+        if (!pattern.matcher(startLine.getUrlPath().getPath()).matches()) {
+            filterChain.doFilter(httpRequest, httpResponse);
+            return;
+        }
+
         String cookieStringValue = httpRequest.getHeader().getValue("Cookie");
 
         //context 설정
