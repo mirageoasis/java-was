@@ -1,5 +1,7 @@
 package handler;
 
+import static util.HeaderStringUtil.CONTENT_TYPE;
+
 import dto.UserDto;
 import http.HttpRequest;
 import http.HttpResponse;
@@ -31,7 +33,7 @@ public class UserCreateHandler extends MyHandler {
             bodyParams.get("email")
         );
         userService.createUser(userDto);
-        httpResponse.getHeader().addKey("Content-Type", "text/html");
+        httpResponse.getHeader().addKey(CONTENT_TYPE, "text/html");
         logger.info("redirect to /index.html");
         ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
     }

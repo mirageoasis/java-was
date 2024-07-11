@@ -1,5 +1,7 @@
 package handler;
 
+import static util.HeaderStringUtil.SET_COOKIE;
+
 import http.HttpRequest;
 import http.HttpResponse;
 import http.ResponseValueSetter;
@@ -34,7 +36,7 @@ public class LoginHandler extends MyHandler{
         newSession.setAttribute(Session.USER, user);
 
         int sessionId = newSession.getSessionId();
-        httpResponse.getHeader().addKey("Set-Cookie", "sid=" + sessionId + "; Path=/" + "; HttpOnly");
+        httpResponse.getHeader().addKey(SET_COOKIE, "sid=" + sessionId + "; Path=/" + "; HttpOnly");
 
         ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
     }

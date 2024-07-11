@@ -1,5 +1,10 @@
 package http;
 
+import static util.HeaderStringUtil.CONTENT_LENGTH;
+import static util.HeaderStringUtil.LOCATION;
+import static util.HttpStatusCode.FOUND;
+import static util.HttpStatusCode.OK;
+
 import exception.GeneralException;
 import http.startline.ResponseLine;
 import org.slf4j.Logger;
@@ -9,12 +14,6 @@ public class ResponseValueSetter {
 
     public static final String CRLF = "\r\n";
     public static final String HTTP_VERSION = "HTTP/1.1";
-    public static final String CONTENT_TYPE = "Content-Type";
-    public static final String CONTENT_LENGTH = "Content-Length";
-    public static final String LOCATION = "Location";
-    public static final String OK = "ok";
-    public static final String REDIRECT = "redirect";
-    public static final Integer OK_CODE = 200;
     private static final Logger logger = LoggerFactory.getLogger(ResponseValueSetter.class);
 
     public static void success(HttpResponse httpResponse, byte[] body) {
@@ -22,7 +21,7 @@ public class ResponseValueSetter {
         Header responseHeader = httpResponse.getHeader();
 
         // start line
-        responseLineSet(responseLine, HTTP_VERSION, OK_CODE, OK);
+        responseLineSet(responseLine, HTTP_VERSION, OK.getStatusCode(), OK.getStatusMessage());
 
         // header
         responseHeader.addKey(CONTENT_LENGTH, String.valueOf(body.length));
@@ -36,7 +35,7 @@ public class ResponseValueSetter {
         Header responseHeader = httpResponse.getHeader();
 
         // start line
-        responseLineSet(responseLine, HTTP_VERSION, OK_CODE, OK);
+        responseLineSet(responseLine, HTTP_VERSION, OK.getStatusCode(), OK.getStatusMessage());
 
         // header
         responseHeader.addKey(CONTENT_LENGTH, "0");
@@ -49,7 +48,7 @@ public class ResponseValueSetter {
         String urlPath) {
         ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
 
-        responseLineSet(responseLine, HTTP_VERSION, 302, "Found");
+        responseLineSet(responseLine, HTTP_VERSION, FOUND.getStatusCode(), FOUND.getStatusMessage());
 
         Header responseHeader = httpResponse.getHeader();
         responseHeader.addKey(LOCATION, urlPath);

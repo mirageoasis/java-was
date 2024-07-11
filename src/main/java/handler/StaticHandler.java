@@ -1,5 +1,7 @@
 package handler;
 
+import static util.HeaderStringUtil.CONTENT_TYPE;
+
 import http.Header;
 import http.HttpRequest;
 import http.HttpResponse;
@@ -37,7 +39,7 @@ public class StaticHandler extends MyHandler {
 
         byte[] fileContent = FileReader.readFileFromUrlPath(requestLine.getUrlPath());
         String contentType = FileReader.guessContentTypeFromUrlPath(requestLine.getUrlPath());
-        responseHeader.addKey("Content-Type", contentType);
+        responseHeader.addKey(CONTENT_TYPE, contentType);
 
         //httpResponse.;
         ResponseValueSetter.success(httpResponse, fileContent);
@@ -50,7 +52,7 @@ public class StaticHandler extends MyHandler {
         String contentType = FileReader.guessContentTypeFromUrlPath(
             RequestContext.current().getUrlPath());
         Header responseHeader = httpResponse.getHeader();
-        responseHeader.addKey("Content-Type", contentType);
+        responseHeader.addKey(CONTENT_TYPE, contentType);
 
         // 2. 로그인 여부 확인 -> 추가할 파일 불러오기
         String fileToAdd = stringToAdd();
