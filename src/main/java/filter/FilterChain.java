@@ -55,9 +55,12 @@ public class FilterChain {
         }
 
         // handler 매핑하기
-        if (RequestContext.current().getSession() != null){
-            logger.info("session id: {}", RequestContext.current().getSession().getSessionId());
-        }
+        RequestContext.current().getSession().ifPresentOrElse(
+            session -> logger.info("session: {}", session),
+            () -> logger.info("session is null")
+        );
+
+
 
         MyHandlerMapper handlerMapper = MyHandlerMapper.getInstance();
         RequestLine requestLine = (RequestLine) httpRequest.getStartLine();

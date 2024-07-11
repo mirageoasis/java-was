@@ -8,6 +8,7 @@ import http.HttpResponse;
 import http.ResponseValueSetter;
 import http.startline.RequestLine;
 import java.io.IOException;
+import java.util.Optional;
 import model.User;
 import org.slf4j.Logger;
 import session.Session;
@@ -69,14 +70,16 @@ public class StaticHandler extends MyHandler {
     private String stringToAdd() throws IOException {
         String failedPath = "index/logout-menu.html";
         String successPath = "index/login-menu.html";
-        Session session = RequestContext.current().getSession();
-        User user = (session != null) ? (User) session.getAttribute(Session.USER) : null;
+        Optional<User> user = RequestContext.current().getSession()
+            .flatMap(session -> Optional.ofNullable(
+                (User) session.getAttribute(Session.USER)
+            ));
 
         logger.info("user: {}", user);
-        if (user != null) {
+        if (user.isPresent()) {
             logger.info("logged in");
             String ret = new String(FileReader.readFileFromUrlPath(successPath));
-            return ret.replace("{username}", user.getName());
+            return ret.replace("{username}", user.get().getName());
         }
 
         logger.info("not logged in");

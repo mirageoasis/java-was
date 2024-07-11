@@ -1,5 +1,6 @@
 package util;
 
+import java.util.Optional;
 import session.Session;
 import http.startline.UrlPath;
 
@@ -28,8 +29,8 @@ public class RequestContext {
         return urlPath;
     }
 
-    public Session getSession() {
+    public Optional<Session> getSession() {
         // return SessionManager.getInstance().getSession(this.sessionId);
-        return session;
+        return Optional.ofNullable(session);
     }
 }
