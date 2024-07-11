@@ -3,7 +3,6 @@ package handler;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.ResponseValueSetter;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import model.User;
@@ -14,7 +13,7 @@ import util.RequestContext;
 public class UserListHandler extends MyHandler {
 
     @Override
-    void doGet(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
+    void doGet(HttpRequest httpRequest, HttpResponse httpResponse) {
         Optional<User> user = RequestContext.current().getSession()
             .flatMap(session -> Optional.ofNullable(
                 (User) session.getAttribute(Session.USER)
