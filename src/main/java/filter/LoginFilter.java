@@ -1,5 +1,6 @@
 package filter;
 
+import java.util.Optional;
 import session.Session;
 import http.HttpRequest;
 import http.HttpResponse;
@@ -26,17 +27,23 @@ public class LoginFilter implements Filter {
         FilterChain filterChain) throws IOException {
         // 여기서 쿠키를 확인한다.
         String cookieStringValue = httpRequest.getHeader().getValue("Cookie");
-        String sessionId = CookieUtil.getCookieValue(cookieStringValue, CookieUtil.sessionId);
 
         //context 설정
+        Integer contextSessionId = getContextSessionId(cookieStringValue);
         UrlPath urlPath = ((RequestLine) httpRequest.getStartLine()).getUrlPath();
-        Integer contextSessionId = (sessionId != null) ? Integer.parseInt(sessionId) : null;
+
         Session session = SessionManager.getInstance().getSession(contextSessionId);
         logger.info("urlPath: {}, session: {}", urlPath, session);
         RequestContext.of(urlPath, session);
 
         // 필터 작동
         filterChain.doFilter(httpRequest, httpResponse);
+    }
+
+
+    private Integer getContextSessionId(String cookieStringValue) {
+        Optional<String> sessionId = Optional.ofNullable(CookieUtil.getCookieValue(cookieStringValue, CookieUtil.sessionId));
+        return sessionId.map(Integer::parseInt).orElse(null);
     }
 
     @Override
