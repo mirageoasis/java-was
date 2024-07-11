@@ -1,7 +1,6 @@
 package handler;
 
-import static util.HeaderStringUtil.SET_COOKIE;
-
+import http.Cookie;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.ResponseValueSetter;
@@ -16,7 +15,8 @@ public class LogoutHandler extends MyHandler {
             s -> SessionManager.getInstance().invalidateSession(s.getSessionId())
         );
 
-        httpResponse.getHeader().addKey(SET_COOKIE, "sid=; Path=/; Max-Age=0");
+        Cookie setCookie = new Cookie("sid", "", null, 0,"/", true);
+        httpResponse.getHeader().addCookie(setCookie);
         ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
     }
 }

@@ -2,7 +2,6 @@ package handler;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static util.HeaderStringUtil.LOCATION;
-import static util.HeaderStringUtil.SET_COOKIE;
 
 import http.Header;
 import http.HttpRequest;
@@ -46,7 +45,7 @@ class LoginHandlerTest {
 
         // Check for redirection by examining the "Location" header
         assertTrue(httpResponse.getHeader().getValue(LOCATION).contains("/index.html"));
-        assertTrue(httpResponse.getHeader().getValue(SET_COOKIE).contains("sid="));
+        assertTrue(httpResponse.getHeader().toString().contains("sid="));
     }
 
     // Additional tests for failed login scenarios can be implemented similarly

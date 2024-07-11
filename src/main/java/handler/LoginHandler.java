@@ -1,17 +1,16 @@
 package handler;
 
-import static util.HeaderStringUtil.SET_COOKIE;
-
+import http.Cookie;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.ResponseValueSetter;
 import java.util.Map;
 import model.User;
 import org.slf4j.Logger;
-import session.SessionManager;
 import repository.UserRepository;
 import service.UserService;
 import session.Session;
+import session.SessionManager;
 import util.LoggerUtil;
 
 public class LoginHandler extends MyHandler{
@@ -36,7 +35,8 @@ public class LoginHandler extends MyHandler{
         newSession.setAttribute(Session.USER, user);
 
         int sessionId = newSession.getSessionId();
-        httpResponse.getHeader().addKey(SET_COOKIE, "sid=" + sessionId + "; Path=/" + "; HttpOnly");
+        Cookie sessionCookie = new Cookie("sid", String.valueOf(sessionId), 0, null,"/", true);
+        httpResponse.getHeader().addCookie(sessionCookie);
 
         ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
     }

@@ -38,7 +38,7 @@ class LogoutHandlerTest {
         logoutHandler.doPost(httpRequest, httpResponse);
 
         // Verify session is invalidated and cookie is set to invalidate the session
-        assertTrue(httpResponse.getHeader().getValue(SET_COOKIE).contains("sid=; Path=/; Max-Age=0"));
+        assertTrue(httpResponse.getHeader().toString().contains("Set-Cookie: sid=; Max-Age=0; Path=/; HttpOnly;"));
         assertTrue(httpResponse.getHeader().getValue(LOCATION).contains("/index.html"));
     }
 
