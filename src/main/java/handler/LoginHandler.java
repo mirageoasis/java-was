@@ -32,7 +32,7 @@ public class LoginHandler extends MyHandler{
         }
         logger.info("Login success");
         Session newSession = SessionManager.getInstance().createSession();
-        newSession.setAttribute(Session.USER, user);
+        newSession.setUser(user);
 
         int sessionId = newSession.getSessionId();
         Cookie sessionCookie = new Cookie("sid", String.valueOf(sessionId), 0, null,"/", true);
