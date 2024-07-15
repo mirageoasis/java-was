@@ -12,15 +12,6 @@ import util.RequestContext;
 
 public class ArticleHandler extends MyHandler {
     @Override
-    public void doGet(HttpRequest httpRequest, HttpResponse httpResponse) {
-        // login
-        // 글 가져오기
-        // queryparamter를 통해 글 번호를 가져온다.
-        // 이후 해당 글과 댓글 정보를 가져온다.
-        return ;
-    }
-
-    @Override
     public void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
         // login
         // 글 작성
@@ -36,8 +27,8 @@ public class ArticleHandler extends MyHandler {
             return;
         }
 
-        if(title == null || content == null) {
-            ResponseValueSetter.fail(httpResponse, new BadRequestException("제목과 내용을 입력해주세요."));
+        if(title == null || content == null || title.isEmpty() || content.isEmpty()) {
+            ResponseValueSetter.failRedirect(httpResponse, new BadRequestException("제목과 내용을 입력해주세요."));
             return;
         }
 

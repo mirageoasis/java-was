@@ -8,7 +8,6 @@ import http.HttpResponse;
 import http.ResponseValueSetter;
 import http.startline.RequestLine;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.slf4j.Logger;
 import util.LoggerUtil;
@@ -58,8 +57,7 @@ public class FilterChain {
 
         // handler 실행
         if (chosenHandler == null) {
-            ResponseValueSetter.fail(httpResponse, new NotFoundException(),
-                "404 Not Found".getBytes(StandardCharsets.UTF_8));
+            ResponseValueSetter.failRedirect(httpResponse, new NotFoundException());
             return;
         }
         chosenHandler.handle(httpRequest, httpResponse);

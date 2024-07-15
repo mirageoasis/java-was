@@ -43,6 +43,8 @@ public class FileReader {
         FilePath filePath = new FilePath(staticPath);
         FilePath join = filePath.join(urlPath);
 
+        logger.info("join path: {}", join.getPath());
+
         File file = new File(join.getPath());
         return file.exists();
     }
