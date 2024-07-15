@@ -68,6 +68,18 @@ public class ResponseValueSetter {
         httpResponse.setBody(new byte[0]);
     }
 
+    public static void fail(HttpResponse httpResponse, GeneralException error, byte[] body) {
+        logger.error("HTTP REQUEST ERROR: {}", error.getMessage());
+        ResponseLine responseLine = (ResponseLine) httpResponse.getStartLine();
+        Header responseHeader = httpResponse.getHeader();
+        // error의 코드를 받아온다.
+        responseLineSet(responseLine, HTTP_VERSION, error.getStatusCode(), error.getMessage());
+
+        responseHeader.addKey(CONTENT_LENGTH, String.valueOf(body.length));
+
+        httpResponse.setBody(body);
+    }
+
     private static void responseLineSet(
         ResponseLine responseLine,
         String httpVersion,

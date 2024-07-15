@@ -1,4 +1,5 @@
-import handler.ArticleHandler;
+package handler;
+
 import http.HttpRequest;
 import http.HttpResponse;
 import http.startline.RequestLine;
@@ -40,7 +41,6 @@ class ArticleHandlerTest {
 
         articleHandler.doPost(httpRequest, httpResponse);
         // Assuming a way to verify the outcome without mocks, possibly by inspecting httpResponse's state
-
     }
 
     // Additional tests here

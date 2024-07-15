@@ -4,7 +4,6 @@ import http.startline.UrlPath;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.slf4j.Logger;
 
@@ -34,10 +33,18 @@ public class FileReader {
             }
         } else {
             logger.info("file not exists");
-            throw new FileNotFoundException("File not found");
+            return null;
         }
 
         return fileContent;
+    }
+
+    public static boolean isFileExists(String urlPath) {
+        FilePath filePath = new FilePath(staticPath);
+        FilePath join = filePath.join(urlPath);
+
+        File file = new File(join.getPath());
+        return file.exists();
     }
 
     public static byte[] readFileFromUrlPath(UrlPath urlPath) throws IOException {

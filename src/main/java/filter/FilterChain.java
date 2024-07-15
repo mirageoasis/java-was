@@ -1,11 +1,14 @@
 package filter;
 
+import exception.NotFoundException;
 import handler.MyHandler;
 import handler.MyHandlerMapper;
 import http.HttpRequest;
 import http.HttpResponse;
+import http.ResponseValueSetter;
 import http.startline.RequestLine;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.slf4j.Logger;
 import util.LoggerUtil;
@@ -49,13 +52,16 @@ public class FilterChain {
             () -> logger.info("session is null")
         );
 
-
-
         MyHandlerMapper handlerMapper = MyHandlerMapper.getInstance();
         RequestLine requestLine = (RequestLine) httpRequest.getStartLine();
         MyHandler chosenHandler = handlerMapper.findHandler(requestLine.getUrlPath().getPath());
 
         // handler 실행
+        if (chosenHandler == null) {
+            ResponseValueSetter.fail(httpResponse, new NotFoundException(),
+                "404 Not Found".getBytes(StandardCharsets.UTF_8));
+            return;
+        }
         chosenHandler.handle(httpRequest, httpResponse);
     }
 

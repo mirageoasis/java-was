@@ -39,6 +39,11 @@ public class StaticHandler extends MyHandler {
         }
 
         byte[] fileContent = FileReader.readFileFromUrlPath(requestLine.getUrlPath());
+
+        if(fileContent == null) {
+            return;
+        }
+
         String contentType = FileReader.guessContentTypeFromUrlPath(requestLine.getUrlPath());
         responseHeader.addKey(CONTENT_TYPE, contentType);
 
