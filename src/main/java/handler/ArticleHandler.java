@@ -12,7 +12,7 @@ import util.RequestContext;
 
 public class ArticleHandler extends MyHandler {
     @Override
-    void doGet(HttpRequest httpRequest, HttpResponse httpResponse) {
+    public void doGet(HttpRequest httpRequest, HttpResponse httpResponse) {
         // login
         // 글 가져오기
         // queryparamter를 통해 글 번호를 가져온다.
@@ -21,7 +21,7 @@ public class ArticleHandler extends MyHandler {
     }
 
     @Override
-    void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
+    public void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
         // login
         // 글 작성
         // body를 통해 글 정보를 가져온다.
