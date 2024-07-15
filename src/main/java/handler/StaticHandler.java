@@ -61,7 +61,7 @@ public class StaticHandler extends MyHandler {
         logger.info("fileToAdd: {}", fileToAdd);
 
         // 3. 파일 합치기
-        String combinedString = fileString.replace("{header-menu}", fileToAdd);
+        String combinedString = fileString.replace("{{header-menu}}", fileToAdd);
 
         // 4. response에 담기
         ResponseValueSetter.success(httpResponse, combinedString.getBytes());
