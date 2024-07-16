@@ -1,7 +1,9 @@
 package http;
 
-import java.io.BufferedReader;
+import static util.InputStreamUtil.readLineFromInputStream;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,10 +25,10 @@ public class Header {
         return new Header();
     }
 
-    public static Header from(BufferedReader bufferedReader) throws IOException {
+    public static Header from(InputStream inputStream) throws IOException {
         StringBuilder headerString = new StringBuilder();
         do {
-            String line = bufferedReader.readLine();
+            String line = readLineFromInputStream(inputStream);
             if (line == null || line.isEmpty()) {
                 break;
             }
