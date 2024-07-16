@@ -87,17 +87,19 @@ public class StaticHandler extends MyHandler {
     }
 
     // Helper method to format a single article as HTML
-    private String formatArticleAsHtml(Article article) {
+    public String formatArticleAsHtml(Article article) {
         StringBuilder html = new StringBuilder();
-        html.append("<div class=\"article\">");
-        html.append("<h2>").append(article.getTitle()).append("</h2>");
-        html.append("<p><strong>User ID:</strong> ").append(article.getUserId()).append("</p>");
-        html.append("<p>").append(article.getContent()).append("</p>");
+        html.append("<a href=\"/article?articleId=").append(article.getArticleId()).append("\" style=\"text-decoration: none; color: inherit; display: block; width: 80%; margin: 0 auto;\">");
+        html.append("<div class=\"wrapper\" style=\"border: 1px solid #ddd; padding: 10px; margin-bottom: 20px; border-radius: 5px; display: flex; align-items: center; width: 100%; box-sizing: border-box; flex-direction: row;\">");
         if (article.getPhotoPath() != null && !article.getPhotoPath().isEmpty()) {
-            html.append("<img src=\"").append(article.getPhotoPath()).append("\" alt=\"Article Photo\" />");
+            html.append("<img src=\"").append(article.getPhotoPath()).append("\" alt=\"Article Photo\" style=\"width: 100px; height: auto; border-radius: 5px; margin-right: 20px;\" />");
         }
-        html.append("<hr>");
+        html.append("<div class=\"article-content\" style=\"flex: 1;\">");
+        html.append("<h2 style=\"font-size: 18px; margin: 0;\">").append(article.getTitle()).append("</h2>");
+        html.append("<p style=\"margin: 5px 0 0; font-size: 14px; color: #555;\"><strong>글쓴이:</strong> ").append(article.getUserId()).append("</p>");
         html.append("</div>");
+        html.append("</div>");
+        html.append("</a>");
         return html.toString();
     }
 

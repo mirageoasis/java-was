@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 public class Article {
     private Long articleId;
     private final String title;
@@ -36,5 +38,9 @@ public class Article {
 
     public String getPhotoPath() {
         return photoPath;
+    }
+
+    public List<Object> getComments() {
+        return null;
     }
 }
