@@ -38,7 +38,7 @@ public class Header {
         return new Header(headerString.toString());
     }
 
-    private Map<String, String> headerMapper(String headerString) {
+    public static Map<String, String> headerMapper(String headerString) {
         if (headerString == null) {
             throw new IllegalArgumentException("헤더 문자열은 null일 수 없습니다.");
         }
@@ -52,11 +52,11 @@ public class Header {
         return headerMap;
     }
 
-    private String[] splitHeaderLine(String headerString) {
+    private static String[] splitHeaderLine(String headerString) {
         return headerString.split("\r\n");
     }
 
-    private void processOneHeaderLine(Map<String, String> headerMap, String headerLine) {
+    private static void processOneHeaderLine(Map<String, String> headerMap, String headerLine) {
         if (!headerLine.trim().isEmpty()) {
             String[] splitHeaderLine = splitOneHeaderLine(headerLine);
             String key = splitHeaderLine[0];
@@ -70,7 +70,7 @@ public class Header {
         }
     }
 
-    private String[] splitOneHeaderLine(String headerString) {
+    private static String[] splitOneHeaderLine(String headerString) {
         if (headerString == null) {
             throw new IllegalArgumentException("null 값은 들어올 수 없습니다.");
         }

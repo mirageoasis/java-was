@@ -25,7 +25,7 @@ public class UserCreateHandler extends MyHandler {
     @Override
     void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
         logger.info("UserCreateHandler doPost");
-        Map<String, String> bodyParams = httpRequest.getBodyParams();
+        Map<String, String> bodyParams = httpRequest.bodyParamsString();
         UserDto userDto = new UserDto(
             bodyParams.get("userId"),
             bodyParams.get("password"),

@@ -20,7 +20,7 @@ public class LoginHandler extends MyHandler{
     @Override
     void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
         logger.info("LoginHandler doPost");
-        Map<String, String> bodyParams = httpRequest.getBodyParams();
+        Map<String, String> bodyParams = httpRequest.bodyParamsString();
         String userId = bodyParams.get("username");
         String password = bodyParams.get("password");
         logger.info("userId: {}, password: {}", userId, password);

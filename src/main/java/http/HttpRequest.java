@@ -5,6 +5,7 @@ import static util.InputStreamUtil.readLineFromInputStream;
 import http.startline.RequestLine;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import util.LoggerUtil;
@@ -28,6 +29,10 @@ public class HttpRequest extends Http {
 
         RequestLine startLine = RequestLine.fromString(firstLine);
         Header header = Header.from(inputStream);
+        if (header.getValue("Content-Type").startsWith("multipart/form-data")) {
+            return new HttpMultiPartRequest(startLine, header, generateBody(inputStream, header));
+        }
+
         byte[] body = generateBody(inputStream, header);
         logger.info("RequestLine: {}", startLine);
         logger.info("Header: {}", header);
@@ -48,7 +53,18 @@ public class HttpRequest extends Http {
         return body;
     }
 
-    public Map<String, String> getBodyParams() {
+    public Map<String, Object> getBodyParams() {
+        //this.getbody
+
+        // QueryParserUtil.parseQuery 메소드를 호출하여 쿼리 문자열을 파싱
+        Map<String, String> temp = QueryParserUtil.parseQuery(new String(this.getBody()));
+
+        // Map<String, String>을 Map<String, Object>로 변환
+
+        return new HashMap<>(temp);
+    }
+
+    public Map<String, String> bodyParamsString() {
         return QueryParserUtil.parseQuery(new String(this.getBody()));
     }
 }
