@@ -2,21 +2,24 @@ package handler;
 
 import dto.WriteRequestDto;
 import exception.BadRequestException;
+import exception.InternalServerError;
 import http.HttpMultiPartRequest;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.ResponseValueSetter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
+import java.util.UUID;
 import model.Article;
+import org.slf4j.Logger;
 import repository.ArticleRepository;
 import session.Session;
+import util.LoggerUtil;
+import util.PhotoReader;
 import util.RequestContext;
 
 public class ArticleHandler extends MyHandler {
+
+    private static final Logger logger = LoggerUtil.getLogger();
 
     @Override
     public void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
@@ -26,47 +29,62 @@ public class ArticleHandler extends MyHandler {
         // 이후 해당 글을 작성한다.
         // 보안 로직은 앞에서 처리해줄 예정
 
-        Map<String, Map<String, byte[]>> bodyParams = ((HttpMultiPartRequest) httpRequest).multipartBodyParams();
+        HttpMultiPartRequest httpMultiPartRequest = (HttpMultiPartRequest) httpRequest;
+        Map<String, Map<String, byte[]>> bodyParams = httpMultiPartRequest.multipartBodyParams();
 
         String title = bodyParams.get("title").get("content").toString();
         String content = bodyParams.get("content").get("content").toString();
         byte[] photo = bodyParams.get("photo").get("content");
-
-        // photo 저장로직
-        // photo를 저장하고 해당 경로를 저장한다.
-
-        // Generate a unique file name for the photo
-        String photoFileName = "dingding.ico";
-        // Define the path where the photo will be saved
-        Path photoPath = Paths.get(photoFileName);
-
-        // Save the photo to the server
-        try (FileOutputStream fos = new FileOutputStream(photoPath.toString())) {
-            fos.write(photo);
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Handle file saving error
-        }
-
         Session session = RequestContext.current().getSession().orElse(null);
+
+        if (
+            bodyParams.get("title") == null ||
+                bodyParams.get("content") == null ||
+                bodyParams.get("photo") == null
+        ) {
+            ResponseValueSetter.failRedirect(httpResponse, new BadRequestException("맞는 형식으로 입력해주세요."));
+            return;
+        }
 
         if (session == null || session.getUser() == null) {
             ResponseValueSetter.fail(httpResponse, new BadRequestException("로그인이 필요합니다."));
             return;
         }
 
-        if (title == null || content == null || title.isEmpty() || content.isEmpty()) {
+        if (!validateBodyParams(title, content, photo)) {
             ResponseValueSetter.failRedirect(httpResponse,
-                new BadRequestException("제목과 내용을 입력해주세요."));
+                new BadRequestException("맞는 형식으로 입력해주세요."));
             return;
         }
 
-        WriteRequestDto writeRequestDto = new WriteRequestDto(title, content);
+        String photoFileName =
+            UUID.randomUUID() + "." + httpMultiPartRequest.getFileExtension("photo");
+        String filePath;
+        try {
+            filePath = PhotoReader.savePhoto(photoFileName, photo);
+        } catch (Exception e) {
+            ResponseValueSetter.failRedirect(httpResponse, new InternalServerError("사진 저장에 실패했습니다."));
+            logger.error("사진 저장에 실패했습니다. {}", e.getMessage());
+            return;
+        }
+
+        // 주소 추가
+        WriteRequestDto writeRequestDto = new WriteRequestDto(title, content, filePath);
         // 글 작성 로직
 
         Article article = writeRequestDto.toEntity(session.getUser());
         ArticleRepository.getInstance().save(article);
 
         ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
+    }
+
+    private boolean validateBodyParams(
+        String title,
+        String content,
+        byte[] photo
+    ) {
+        return title != null && !title.isEmpty() &&
+            content != null && !content.isEmpty() &&
+            photo != null && photo.length > 0;
     }
 }

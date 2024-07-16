@@ -1,10 +1,14 @@
 package exception;
 
-import static util.HttpStatusCode.METHOD_NOT_ALLOWED;
+import static util.HttpStatusCode.INTERNAL_SERVER_ERROR;
 
-public class ServerError extends GeneralException {
+public class InternalServerError extends GeneralException {
 
-    public ServerError() {
-        super(METHOD_NOT_ALLOWED.getStatusMessage(), METHOD_NOT_ALLOWED.getStatusCode());
+    public InternalServerError() {
+        super(INTERNAL_SERVER_ERROR.getStatusMessage(), INTERNAL_SERVER_ERROR.getStatusCode());
+    }
+
+    public InternalServerError(String message) {
+        super(message, INTERNAL_SERVER_ERROR.getStatusCode());
     }
 }

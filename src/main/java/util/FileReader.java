@@ -1,5 +1,7 @@
 package util;
 
+import static util.FileUtil.getFileExtension;
+
 import http.startline.UrlPath;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -40,13 +42,14 @@ public class FileReader {
     }
 
     public static boolean isFileExists(String urlPath) {
+        // 디렉토리가 아닌 파일이 존재하는지 확인
         FilePath filePath = new FilePath(staticPath);
         FilePath join = filePath.join(urlPath);
 
         logger.info("join path: {}", join.getPath());
 
         File file = new File(join.getPath());
-        return file.exists();
+        return file.exists() && file.isFile();
     }
 
     public static byte[] readFileFromUrlPath(UrlPath urlPath) throws IOException {
@@ -67,14 +70,6 @@ public class FileReader {
             case "ico" -> "image/x-icon";
             default -> "application/octet-stream"; // 기타 파일 형식에 대한 기본 MIME 타입
         };
-    }
-
-    private static String getFileExtension(String fileName) {
-        int lastIndex = fileName.lastIndexOf('.');
-        if (lastIndex == -1) {
-            return ""; // 확장자가 없는 경우 빈 문자열 반환
-        }
-        return fileName.substring(lastIndex + 1).toLowerCase();
     }
 
 }

@@ -5,11 +5,13 @@ public class Article {
     private final String title;
     private final String content;
     private final String userId;
+    private final String photoPath;
 
-    public Article(String title, String content, String userId) {
+    public Article(String title, String content, String userId, String photoPath) {
         this.title = title;
         this.content = content;
         this.userId = userId;
+        this.photoPath = photoPath;
     }
 
     public String getTitle() {
@@ -30,5 +32,9 @@ public class Article {
 
     public Long getArticleId() {
         return articleId;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
     }
 }
