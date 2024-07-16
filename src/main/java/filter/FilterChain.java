@@ -30,7 +30,8 @@ public class FilterChain {
 
     public FilterChain() {
         this.filters = List.of(
-            new LoginFilter()
+            new LoginFilter(),
+            new AuthFilter()
         );
         this.handlerMapper = MyHandlerMapper.getInstance();
     }

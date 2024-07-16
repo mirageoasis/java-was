@@ -16,6 +16,7 @@ import session.Session;
 import util.LoggerUtil;
 import util.PhotoReader;
 import util.RequestContext;
+import util.StaticPage;
 
 public class ArticleHandler extends MyHandler {
 
@@ -75,7 +76,7 @@ public class ArticleHandler extends MyHandler {
         Article article = writeRequestDto.toEntity(session.getUser());
         ArticleRepository.getInstance().save(article);
 
-        ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
+        ResponseValueSetter.redirect(httpRequest, httpResponse, StaticPage.indexPage);
     }
 
     private boolean validateBodyParams(

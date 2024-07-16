@@ -15,6 +15,7 @@ import session.Session;
 import util.FileReader;
 import util.LoggerUtil;
 import util.RequestContext;
+import util.StaticPage;
 
 public class StaticHandler extends MyHandler {
 
@@ -26,15 +27,15 @@ public class StaticHandler extends MyHandler {
         RequestLine requestLine = (RequestLine) httpRequest.getStartLine();
         Header responseHeader = httpResponse.getHeader();
 
-        if (requestLine.getUrlPath().getPath().equals("/index.html")) {
+        if (requestLine.getUrlPath().getPath().equals(StaticPage.indexPage)) {
             // context로 로그인 여부 확인
-            indexPage(httpRequest, httpResponse);
+            callIndexPage(httpRequest, httpResponse);
             return;
         }
 
         if (requestLine.getUrlPath().getPath().equals("/register.html")) {
-            logger.info("redirect to /registration/index.html");
-            ResponseValueSetter.redirect(httpRequest, httpResponse, "/registration/index.html");
+            logger.info("redirect to {}", StaticPage.registerPage);
+            ResponseValueSetter.redirect(httpRequest, httpResponse, StaticPage.registerPage);
             return;
         }
 
@@ -51,7 +52,7 @@ public class StaticHandler extends MyHandler {
         ResponseValueSetter.success(httpResponse, fileContent);
     }
 
-    private void indexPage(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
+    private void callIndexPage(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
         // 1. index.html 불러오기
         byte[] fileContent = FileReader.readFileFromUrlPath(RequestContext.current().getUrlPath());
         String fileString = new String(fileContent);

@@ -12,6 +12,7 @@ import service.UserService;
 import session.Session;
 import session.SessionManager;
 import util.LoggerUtil;
+import util.StaticPage;
 
 public class LoginHandler extends MyHandler{
     private static final Logger logger = LoggerUtil.getLogger();
@@ -38,6 +39,6 @@ public class LoginHandler extends MyHandler{
         Cookie sessionCookie = new Cookie("sid", String.valueOf(sessionId), 0, null,"/", true);
         httpResponse.getHeader().addCookie(sessionCookie);
 
-        ResponseValueSetter.redirect(httpRequest, httpResponse, "/index.html");
+        ResponseValueSetter.redirect(httpRequest, httpResponse, StaticPage.indexPage);
     }
 }
