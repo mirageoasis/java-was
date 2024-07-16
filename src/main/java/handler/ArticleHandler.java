@@ -8,7 +8,6 @@ import http.HttpRequest;
 import http.HttpResponse;
 import http.ResponseValueSetter;
 import java.util.Map;
-import java.util.UUID;
 import model.Article;
 import org.slf4j.Logger;
 import repository.ArticleRepository;
@@ -33,8 +32,8 @@ public class ArticleHandler extends MyHandler {
         HttpMultiPartRequest httpMultiPartRequest = (HttpMultiPartRequest) httpRequest;
         Map<String, Map<String, byte[]>> bodyParams = httpMultiPartRequest.multipartBodyParams();
 
-        String title = bodyParams.get("title").get("content").toString();
-        String content = bodyParams.get("content").get("content").toString();
+        String title = new String(bodyParams.get("title").get("content"));
+        String content = new String(bodyParams.get("content").get("content"));
         byte[] photo = bodyParams.get("photo").get("content");
         Session session = RequestContext.current().getSession().orElse(null);
 
@@ -58,11 +57,9 @@ public class ArticleHandler extends MyHandler {
             return;
         }
 
-        String photoFileName =
-            UUID.randomUUID() + "." + httpMultiPartRequest.getFileExtension("photo");
         String filePath;
         try {
-            filePath = PhotoReader.savePhoto(photoFileName, photo);
+            filePath = PhotoReader.savePhoto(httpMultiPartRequest.getFileExtension("photo"), photo);
         } catch (Exception e) {
             ResponseValueSetter.failRedirect(httpResponse, new InternalServerError("사진 저장에 실패했습니다."));
             logger.error("사진 저장에 실패했습니다. {}", e.getMessage());

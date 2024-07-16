@@ -37,4 +37,8 @@ public class ArticleRepository {
     public Optional<Article> findById(Long id) {
         return Optional.ofNullable(articles.get(id));
     }
+
+    public Map<Long, Article> getAllArticles() {
+        return articles;
+    }
 }

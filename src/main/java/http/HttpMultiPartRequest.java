@@ -47,6 +47,9 @@ public class HttpMultiPartRequest extends HttpRequest{
         var data = multipartBodyParams();
         logger.info("data: {}", new String(data.get(parameterName).get(CONTENT_DISPOSITION)));
         String fileName = CookieUtil.getCookieValue(new String(data.get(parameterName).get(CONTENT_DISPOSITION)), "filename");
+        // 만약에 앞 뒤로 "가 있다면 제거
+        if (fileName.startsWith("\"") && fileName.endsWith("\""))
+            fileName = fileName.substring(1, fileName.length() - 1);
 
         return FileUtil.getFileExtension(fileName);
     }

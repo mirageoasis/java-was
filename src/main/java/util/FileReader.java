@@ -22,7 +22,7 @@ public class FileReader {
     public static byte[] readFileFromUrlPath(String urlPath) throws IOException {
         FilePath filePath = new FilePath(staticPath);
         FilePath join = filePath.join(urlPath);
-
+        logger.info("reading file from {}", join.getPath());
         File file = new File(join.getPath());
         byte[] fileContent = null;
         if (file.exists()) {
