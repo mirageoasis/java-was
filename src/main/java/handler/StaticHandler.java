@@ -89,7 +89,7 @@ public class StaticHandler extends MyHandler {
     // Helper method to format a single article as HTML
     public String formatArticleAsHtml(Article article) {
         StringBuilder html = new StringBuilder();
-        html.append("<a href=\"/article?articleId=").append(article.getArticleId()).append("\" style=\"text-decoration: none; color: inherit; display: block; width: 80%; margin: 0 auto;\">");
+        html.append("<a class=\"article\" href=\"/article?articleId=").append(article.getArticleId()).append("\" style=\"text-decoration: none; color: inherit; display: block; width: 80%; margin: 0 auto;\">");
         html.append("<div class=\"wrapper\" style=\"border: 1px solid #ddd; padding: 10px; margin-bottom: 20px; border-radius: 5px; display: flex; align-items: center; width: 100%; box-sizing: border-box; flex-direction: row;\">");
         if (article.getPhotoPath() != null && !article.getPhotoPath().isEmpty()) {
             html.append("<img src=\"").append(article.getPhotoPath()).append("\" alt=\"Article Photo\" style=\"width: 100px; height: auto; border-radius: 5px; margin-right: 20px;\" />");
@@ -102,6 +102,7 @@ public class StaticHandler extends MyHandler {
         html.append("</a>");
         return html.toString();
     }
+
 
     private String stringToAdd() throws IOException {
         String failedPath = "index/logout-menu.html";

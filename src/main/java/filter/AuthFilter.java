@@ -16,7 +16,7 @@ public class AuthFilter implements Filter {
 
     private static final Logger logger = LoggerUtil.getLogger();
     private static final Set<String> authCheckUrl = Set.of(
-        "/user/list", "/create", "/write", "/writePage", StaticPage.articleWritePage
+        "/user/list", "/create", "/writePage", StaticPage.articleWritePage
     );
 
     @Override

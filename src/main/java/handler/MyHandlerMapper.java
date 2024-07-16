@@ -17,7 +17,7 @@ public class MyHandlerMapper {
     private MyHandlerMapper() {
         addHandler("/create", new UserCreateHandler(new UserService(UserRepository.getInstance())));
         addHandler("/writePage", new ArticleWritePageHandler());
-        addHandler("/write", new ArticleHandler());
+        addHandler("/article", new ArticleHandler());
         addHandler("/registration", new RegistrationHandler());
         addHandler("/loginPage", new LoginPageHandler());
         addHandler("/login", new LoginHandler());

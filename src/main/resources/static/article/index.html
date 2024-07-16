@@ -23,7 +23,7 @@
       </header>
       <div class="page">
         <h2 class="page-title">게시글 작성</h2>
-        <form class="form" id="article-write-form" action="/write" method="POST" enctype="multipart/form-data">
+        <form class="form" id="article-write-form" action="/article" method="POST" enctype="multipart/form-data">
           <div class="textfield textfield_size_s">
             <input type="text" class="input_textfield" placeholder="글의 제목을 입력하세요" autocomplete="off" name="title" />
           </div>
@@ -45,7 +45,7 @@
   <script>
     document.getElementById('article-write-form').addEventListener('submit', function(event) {
       event.preventDefault();
-      this.action = '/write';
+      this.action = '/article';
       this.submit();
     });
   </script>

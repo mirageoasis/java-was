@@ -3,10 +3,12 @@ package handler;
 import dto.WriteRequestDto;
 import exception.BadRequestException;
 import exception.InternalServerError;
+import exception.NotFoundException;
 import http.HttpMultiPartRequest;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.ResponseValueSetter;
+import http.startline.RequestLine;
 import java.util.Map;
 import model.Article;
 import org.slf4j.Logger;
@@ -22,12 +24,63 @@ public class ArticleHandler extends MyHandler {
     private static final Logger logger = LoggerUtil.getLogger();
 
     @Override
+    public void doGet(HttpRequest httpRequest, HttpResponse httpResponse) {
+        // index
+        // getArticleId로 들어온 요청을 받아서 해당 id를 가진 글을 보여준다.
+
+        RequestLine requestLine = (RequestLine) httpRequest.getStartLine();
+
+        requestLine.getUrlPath().getQueryParameter("articleId").ifPresentOrElse(
+            articleId -> {
+                Article article = ArticleRepository.getInstance().findById(Long.parseLong(articleId)).orElse(null);
+                if (article == null) {
+                    ResponseValueSetter.failRedirect(httpResponse, new NotFoundException());
+                    return;
+                }
+
+                ResponseValueSetter.success(httpResponse, makeArticleHtml(article));
+            },
+            () -> {
+                ResponseValueSetter.fail(httpResponse, new BadRequestException("잘못된 요청입니다."));
+            }
+        );
+
+
+    }
+
+    private byte[] makeArticleHtml(Article article) {
+        String html =
+            "<html>" +
+                "<head>" +
+                "<meta charset=\"UTF-8\">" +
+                "<title>" + article.getTitle() + "</title>" +
+                "<style>" +
+                "body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; }" +
+                ".article { max-width: 800px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }" +
+                "h1 { font-size: 24px; color: #333; }" +
+                "p { font-size: 16px; color: #666; line-height: 1.6; }" +
+                "img { max-width: 100%; height: auto; border-radius: 5px; }" +
+                "</style>" +
+                "</head>" +
+                "<body>" +
+                "<div class='article'>" +
+                "<h1>" + "제목: " + article.getTitle() + "</h1>" +
+                "<p>" + "내용: " + article.getContent() + "</p>" +
+                (article.getPhotoPath() != null && !article.getPhotoPath().isEmpty() ? "<img src=\"" + article.getPhotoPath() + "\" alt=\"Article Photo\"/>" : "") +
+                "</div>" +
+                "</body>" +
+                "</html>";
+        return html.getBytes();
+    }
+
+
+    @Override
     public void doPost(HttpRequest httpRequest, HttpResponse httpResponse) {
         // login
         // 글 작성
         // body를 통해 글 정보를 가져온다.
         // 이후 해당 글을 작성한다.
-        // 보안 로직은 앞에서 처리해줄 예정
+        // 보안 로직 여기서
 
         HttpMultiPartRequest httpMultiPartRequest = (HttpMultiPartRequest) httpRequest;
         Map<String, Map<String, byte[]>> bodyParams = httpMultiPartRequest.multipartBodyParams();
