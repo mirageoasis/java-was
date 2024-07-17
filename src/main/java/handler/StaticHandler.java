@@ -12,7 +12,7 @@ import java.util.Optional;
 import model.Article;
 import model.User;
 import org.slf4j.Logger;
-import repository.ArticleRepository;
+import repository.ArticleRepositoryMemory;
 import session.Session;
 import util.FileReader;
 import util.LoggerUtil;
@@ -78,10 +78,10 @@ public class StaticHandler extends MyHandler {
     }
 
     private String articleToAdd() {
-        ArticleRepository articleRepository = ArticleRepository.getInstance();
+        ArticleRepositoryMemory articleRepositoryMemory = ArticleRepositoryMemory.getInstance();
 
         // Retrieve all articles and format them into an HTML structure
-        return articleRepository.getAllArticles().entrySet().stream()
+        return articleRepositoryMemory.getAllArticles().entrySet().stream()
             .map(entry -> formatArticleAsHtml(entry.getValue()))
             .reduce("", (a, b) -> a + b);
     }

@@ -1,6 +1,5 @@
 package codesquad;
 
-import database.DatabaseConnector;
 import database.H2Server;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,7 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import model.User;
 import org.slf4j.Logger;
-import repository.UserRepositoryMemory;
+import repository.UserRepositoryDB;
 import util.LoggerUtil;
 
 
@@ -19,17 +18,17 @@ public class Main {
     private static final int PORT = 8080;
     private static final int THREAD_POOL_SIZE = 10;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
 
         ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-        // 유저 추가
-        UserRepositoryMemory.getInstance().addUser( new User("a", "a", "a", "a"));
+
         H2Server h2Server = new H2Server();
 
         try {
             h2Server.start();
             // 데이터 베이스 커낵션 테스트
-            DatabaseConnector.getInstance().getConnection();
+            //유저 추가
+            UserRepositoryDB.getInstance().addUser( new User("a", "a", "a", "a"));
             try (ServerSocket serverSocket = new ServerSocket(PORT)) {
                 logger.info("Server started on port " + PORT);
 

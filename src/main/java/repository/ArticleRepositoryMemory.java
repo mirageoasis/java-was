@@ -7,21 +7,21 @@ import model.Article;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ArticleRepository {
+public class ArticleRepositoryMemory extends ArticleRepository {
 
-    private static final ArticleRepository articleRepository = new ArticleRepository();
-    private static final Logger log = LoggerFactory.getLogger(ArticleRepository.class);
+    private static final ArticleRepositoryMemory ARTICLE_REPOSITORY_MEMORY = new ArticleRepositoryMemory();
+    private static final Logger log = LoggerFactory.getLogger(ArticleRepositoryMemory.class);
     private final Map<Long, Article> articles = new ConcurrentHashMap<>();
     private Long sequence = 0L;
 
-    private ArticleRepository() {
+    private ArticleRepositoryMemory() {
     }
 
-    public static ArticleRepository getInstance() {
-        return articleRepository;
+    public static ArticleRepositoryMemory getInstance() {
+        return ARTICLE_REPOSITORY_MEMORY;
     }
 
-    public synchronized void save(Article article) {
+    public synchronized void save(Article article){
         // 글 저장 로직
         article.setArticleId(sequence);
         articles.put(sequence++, article);
@@ -38,7 +38,7 @@ public class ArticleRepository {
         return Optional.ofNullable(articles.get(id));
     }
 
-    public Map<Long, Article> getAllArticles() {
+    public Map<Long, Article> getAllArticles(){
         return articles;
     }
 }

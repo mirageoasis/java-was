@@ -6,12 +6,12 @@ import model.User;
 import org.slf4j.Logger;
 import util.LoggerUtil;
 
-public class UserRepository {
+public class UserRepositoryMemory extends UserRepository {
     private static final Logger logger = LoggerUtil.getLogger();
     private final Map<String, User> users = new ConcurrentHashMap<>();
-    private static UserRepository instance= new UserRepository();
+    private static final UserRepositoryMemory instance= new UserRepositoryMemory();
 
-    private UserRepository() {
+    private UserRepositoryMemory() {
     }
 
     public User[] findAll() {
@@ -44,7 +44,7 @@ public class UserRepository {
         return null;
     }
 
-    public static UserRepository getInstance() {
+    public static UserRepositoryMemory getInstance() {
         return instance;
     }
 }

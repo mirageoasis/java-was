@@ -12,7 +12,7 @@ import http.startline.RequestLine;
 import java.util.Map;
 import model.Article;
 import org.slf4j.Logger;
-import repository.ArticleRepository;
+import repository.ArticleRepositoryMemory;
 import session.Session;
 import util.LoggerUtil;
 import util.PhotoReader;
@@ -32,7 +32,7 @@ public class ArticleHandler extends MyHandler {
 
         requestLine.getUrlPath().getQueryParameter("articleId").ifPresentOrElse(
             articleId -> {
-                Article article = ArticleRepository.getInstance().findById(Long.parseLong(articleId)).orElse(null);
+                Article article = ArticleRepositoryMemory.getInstance().findById(Long.parseLong(articleId)).orElse(null);
                 if (article == null) {
                     ResponseValueSetter.failRedirect(httpResponse, new NotFoundException());
                     return;
@@ -124,7 +124,7 @@ public class ArticleHandler extends MyHandler {
         // 글 작성 로직
 
         Article article = writeRequestDto.toEntity(session.getUser());
-        ArticleRepository.getInstance().save(article);
+        ArticleRepositoryMemory.getInstance().save(article);
 
         ResponseValueSetter.redirect(httpRequest, httpResponse, StaticPage.indexPage);
     }

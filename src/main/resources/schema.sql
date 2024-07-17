@@ -1,20 +1,20 @@
 -- 유저 테이블 삭제 (이미 존재하는 경우)
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users CASCADE;
 
 -- 유저 테이블 생성
 CREATE TABLE users (
                        user_id VARCHAR(255) PRIMARY KEY,
-                       password VARCHAR(255) NOT NULL,
-                       name VARCHAR(255) NOT NULL,
-                       email VARCHAR(255) NOT NULL
+                       password VARCHAR(255),
+                       name VARCHAR(255),
+                       email VARCHAR(255)
 );
 
 -- 초기 유저 데이터 삽입
-INSERT INTO users (user_id, password, name, email) VALUES
-                                                       ('a', 'a', 'a', 'a');
+-- INSERT INTO users (user_id, password, name, email) VALUES
+--                                                        ('a', 'a', 'a', 'a');
 
 -- 아티클 테이블 삭제 (이미 존재하는 경우)
-DROP TABLE IF EXISTS articles;
+DROP TABLE IF EXISTS articles CASCADE;
 
 -- 아티클 테이블 생성
 CREATE TABLE articles (
