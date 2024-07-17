@@ -11,15 +11,8 @@ import util.LoggerUtil;
 
 public class MyHandlerMapper {
     private static final Logger logger = LoggerUtil.getLogger();
-    private static final MyHandlerMapper instance;
-
-    static {
-        try {
-            instance = new MyHandlerMapper();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static MyHandlerMapper instance;
+    
 
     // TODO: 나중에 handler에서 어노테이션을 붙이면 여기에 추가하는 방식이 나오면 좋겠다.
     private final Map<String, MyHandler> handlerMap = new HashMap<>();

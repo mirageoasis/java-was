@@ -15,7 +15,7 @@ public abstract class MyHandler {
     private static final Logger logger = LoggerUtil.getLogger();
 
     public void handle(HttpRequest httpRequest, HttpResponse httpResponse)
-        throws IOException, SQLException {
+        throws IOException, SQLException{
         RequestLine requestLine = (RequestLine) httpRequest.getStartLine();
         HttpMethod httpMethod = requestLine.getMethod();
         logger.info("Request: {}", httpRequest);

@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import model.User;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import util.LoggerUtil;
 
-public class UserRepositoryDB extends UserRepository{
-    private static final Logger logger = LoggerFactory.getLogger(UserRepositoryDB.class);
+public class UserRepositoryDB extends UserRepository {
+
+    private static final Logger logger = LoggerUtil.getLogger();
     private static UserRepositoryDB instance;
     private Connection connection;
 
@@ -27,7 +28,7 @@ public class UserRepositoryDB extends UserRepository{
         return instance;
     }
 
-    public void addUser(User user) throws SQLException {
+    public void addUser(User user) {
         String query = "INSERT INTO users (user_id, password, name, email) VALUES (?, ?, ?, ?)";
         logger.info("prepared query info: {}", query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -37,10 +38,12 @@ public class UserRepositoryDB extends UserRepository{
             statement.setString(4, user.getEmail());
             logger.info("final query info: {}", statement);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error: {}", e.getMessage());
         }
     }
 
-    public User getUserById(String userId) throws SQLException {
+    public User getUserById(String userId) {
         String query = "SELECT * FROM users WHERE user_id = ?";
         User user = null;
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -50,11 +53,13 @@ public class UserRepositoryDB extends UserRepository{
                 user = new User(resultSet.getString("user_id"), resultSet.getString("password"),
                     resultSet.getString("name"), resultSet.getString("email"));
             }
+        } catch (SQLException e) {
+            logger.error("Error: {}", e.getMessage());
         }
         return user;
     }
 
-    public User[] findAll() throws SQLException {
+    public User[] findAll() {
         String query = "SELECT * FROM users";
         List<User> users = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -63,15 +68,20 @@ public class UserRepositoryDB extends UserRepository{
                 users.add(new User(resultSet.getString("user_id"), resultSet.getString("password"),
                     resultSet.getString("name"), resultSet.getString("email")));
             }
+        } catch (SQLException e) {
+            logger.error("Error: {}", e.getMessage());
         }
+
         return users.toArray(new User[0]);
     }
 
-    public void removeUser(String userId) throws SQLException {
+    public void removeUser(String userId){
         String query = "DELETE FROM users WHERE user_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, userId);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error: {}", e.getMessage());
         }
     }
 }
