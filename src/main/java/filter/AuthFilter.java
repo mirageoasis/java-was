@@ -31,6 +31,7 @@ public class AuthFilter implements Filter {
 
         // 해당하는 url인지 확인
         RequestLine startLine = (RequestLine) httpRequest.getStartLine();
+        //로그인도 같이하자
         if (!authCheckUrl.contains(startLine.getUrlPath().getPath())) {
             filterChain.doFilter(httpRequest, httpResponse);
             return;

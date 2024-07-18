@@ -36,7 +36,7 @@ public class ArticleRepositoryDB extends ArticleRepository {
         try (PreparedStatement statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, article.getTitle());
             statement.setString(2, article.getContent());
-            statement.setString(3, article.getUserId());
+                statement.setString(3, article.getUserId());
             statement.setString(4, article.getPhotoPath());
             logger.info("final query info: {}", statement);
             int affectedRows = statement.executeUpdate();

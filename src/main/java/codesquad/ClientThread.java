@@ -4,7 +4,6 @@ import filter.FilterChain;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.startline.ResponseLine;
-import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +27,6 @@ public class ClientThread implements Runnable {
             OutputStream clientOutput = clientSocket.getOutputStream();
             InputStream inputStream = clientSocket.getInputStream()
         ) {
-            new BufferedInputStream(inputStream);
             // HTTP 응답을 생성합니다.
             // bufferedInputstream
             HttpRequest httpRequest = HttpRequest.generateHttpRequest(inputStream);

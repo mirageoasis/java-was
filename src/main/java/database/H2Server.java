@@ -9,7 +9,6 @@ public class H2Server {
 
     public void start() throws SQLException {
         server = Server.createTcpServer("-tcpAllowOthers", "-tcpPort", "9092", "-ifNotExists").start();
-        System.out.println("H2 server started and listening on port 9092.");
         webServer = Server.createWebServer("-webAllowOthers", "-webPort", "8082").start();
     }
 
